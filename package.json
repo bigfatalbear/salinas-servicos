@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "build:pages": "cross-env VITE_BASE=/salinas-servicos/ npm run build",
     "postbuild": "node -e \"const fs=require('fs'); if(fs.existsSync('dist/index.html')) fs.copyFileSync('dist/index.html','dist/404.html')\"",
-    "deploy": "npm run build:pages && gh-pages -d dist",
+    "deploy": "npm run build:pages && gh-pages -d dist --dotfiles --nojekyll",
     "lint": "oxlint",
     "preview": "vite preview"
   },
