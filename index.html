@@ -70,6 +70,20 @@
         }
       })()
     </script>
+    <script>
+      ;(function () {
+        try {
+          var base = '%BASE_URL%'
+          var resetPath = base + 'redefinir-senha'
+          var search = window.location.search
+          var hash = window.location.hash
+          var isRecovery = /[?&#]type=recovery(?:&|$)/.test(search + hash)
+          if (isRecovery && window.location.pathname !== resetPath) {
+            window.location.replace(resetPath + search + hash)
+          }
+        } catch (error) {}
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

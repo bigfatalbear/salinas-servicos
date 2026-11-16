@@ -64,7 +64,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (active) setLoading(false)
     })
 
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: subscription } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        const resetUrl = getAuthRedirectUrl('/redefinir-senha')
+        const currentUrl = `${window.location.origin}${window.location.pathname}`
+        if (currentUrl !== resetUrl) {
+          window.location.replace(resetUrl)
+          return
+        }
+      }
+
       const sessionUser = session?.user ?? null
       setUser(sessionUser)
       if (sessionUser) {
