@@ -49,7 +49,7 @@ export function Categories() {
       <PageHeader
         eyebrow="Diretório local"
         title="Encontre por categoria."
-        description={`Do conserto da casa à venda de mariscos e ao transporte, veja os serviços disponíveis em ${CITY_NAME} e nos distritos.`}
+        description={`Do conserto da casa aos mercados, materiais de construção, mariscos e transporte, veja os serviços disponíveis em ${CITY_NAME} e nos distritos.`}
         action={
           <Link to="/profissionais" className="btn btn-soft">
             <Search className="h-4 w-4" aria-hidden="true" />

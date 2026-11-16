@@ -1,4 +1,5 @@
 import {
+  BrickWall,
   Camera,
   Car,
   CarTaxiFront,
@@ -10,6 +11,7 @@ import {
   Paintbrush,
   Sailboat,
   Scissors,
+  ShoppingBasket,
   Sparkles,
   Truck,
   Zap,
@@ -26,6 +28,8 @@ const icons: Record<string, LucideIcon> = {
   car: Car,
   'car-taxi-front': CarTaxiFront,
   fish: Fish,
+  'shopping-basket': ShoppingBasket,
+  'brick-wall': BrickWall,
   home: Home,
   'chef-hat': ChefHat,
   camera: Camera,

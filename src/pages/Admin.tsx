@@ -47,6 +47,8 @@ const iconOptions = [
   'car',
   'car-taxi-front',
   'fish',
+  'shopping-basket',
+  'brick-wall',
   'home',
   'chef-hat',
   'camera',
