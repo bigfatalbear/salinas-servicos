@@ -45,6 +45,8 @@ const iconOptions = [
   'paintbrush',
   'scissors',
   'car',
+  'car-taxi-front',
+  'fish',
   'home',
   'chef-hat',
   'camera',
@@ -221,7 +223,7 @@ export function Admin() {
         <StatCard icon={BarChart3} label="Votos na enquete" value={pollTotal} tone="coral" />
       </div>
 
-      <div className="mt-7 flex gap-1 overflow-x-auto rounded-full border border-[var(--line)] bg-white p-1 no-scrollbar">
+      <div className="mt-7 flex gap-1 overflow-x-auto rounded-full border border-line bg-surface p-1 no-scrollbar">
         {[
           { key: 'perfis' as const, label: 'Perfis', icon: Users },
           { key: 'categorias' as const, label: 'Categorias', icon: Tags },
@@ -233,7 +235,7 @@ export function Admin() {
             onClick={() => setTab(item.key)}
             className={cn(
               'inline-flex flex-1 shrink-0 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition',
-              tab === item.key ? 'bg-deep text-white' : 'text-deep/55 hover:text-deep',
+              tab === item.key ? 'bg-brand-deep text-white' : 'text-muted hover:text-ink',
             )}
           >
             <item.icon className="h-4 w-4" />

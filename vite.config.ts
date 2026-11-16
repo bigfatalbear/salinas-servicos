@@ -12,14 +12,20 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
+      includeAssets: [
+        'favicon.svg',
+        'apple-touch-icon.png',
+        'pwa-192.png',
+        'pwa-512.png',
+        'pwa-maskable-512.png',
+      ],
       manifest: {
         name: 'Salinas Serviços',
         short_name: 'Salinas Serviços',
         description:
-          'Encontre profissionais de confiança em Salinas da Margarida — BA. Eletricistas, manicures, fretes, diaristas e muito mais.',
-        theme_color: '#0b3b5a',
-        background_color: '#fbf7ef',
+          'Encontre profissionais, serviços e comércios de Salinas da Margarida. Contato direto pelo WhatsApp e recomendação da comunidade.',
+        theme_color: '#087ea4',
+        background_color: '#fff8e8',
         display: 'standalone',
         orientation: 'portrait',
         lang: 'pt-BR',
@@ -30,14 +36,16 @@ export default defineConfig({
             src: 'pwa-192.png',
             sizes: '192x192',
             type: 'image/png',
+            purpose: 'any',
           },
           {
             src: 'pwa-512.png',
             sizes: '512x512',
             type: 'image/png',
+            purpose: 'any',
           },
           {
-            src: 'pwa-512.png',
+            src: 'pwa-maskable-512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',

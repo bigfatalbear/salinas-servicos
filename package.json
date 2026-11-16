@@ -8,13 +8,13 @@
     "build": "tsc -b && vite build",
     "build:pages": "cross-env VITE_BASE=/salinas-servicos/ npm run build",
     "postbuild": "node -e \"const fs=require('fs'); if(fs.existsSync('dist/index.html')) fs.copyFileSync('dist/index.html','dist/404.html')\"",
-    "deploy": "npm run build:pages && gh-pages -d dist --dotfiles --nojekyll",
+    "deploy": "npm run build:pages && gh-pages -d dist --dotfiles --nojekyll --no-history",
     "lint": "oxlint",
     "preview": "vite preview"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",
-    "@fontsource/playfair-display": "^5.3.0",
+    "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "@supabase/supabase-js": "^2.119.0",
     "lucide-react": "^1.72.0",
     "react": "^19.3.1",

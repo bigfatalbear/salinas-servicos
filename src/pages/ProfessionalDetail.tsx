@@ -12,7 +12,7 @@ import {
   ThumbsUp,
   UserRound,
 } from 'lucide-react'
-import { WHATSAPP_MESSAGE } from '../config'
+import { APP_NAME, CITY_NAME, WHATSAPP_MESSAGE } from '../config'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import {
@@ -57,6 +57,7 @@ export function ProfessionalDetail() {
     let active = true
     if (!id) return
     setLoading(true)
+    setActivePhoto(0)
     setRecommended(readRecommended().includes(id))
     fetchProfessional(id)
       .then(async (result) => {
@@ -91,10 +92,18 @@ export function ProfessionalDetail() {
 
   useEffect(() => {
     if (!professional) return
-    const previous = document.title
-    document.title = `${professional.business_name} — Salinas Serviços`
+    const previousTitle = document.title
+    const meta = document.querySelector('meta[name="description"]')
+    const previousDescription = meta?.getAttribute('content') ?? ''
+    document.title = `${professional.business_name} — ${APP_NAME}`
+    meta?.setAttribute(
+      'content',
+      professional.description?.slice(0, 155) ||
+        `${professional.business_name} em ${CITY_NAME}. Veja informações e fale pelo WhatsApp.`,
+    )
     return () => {
-      document.title = previous
+      document.title = previousTitle
+      meta?.setAttribute('content', previousDescription)
     }
   }, [professional])
 
@@ -159,8 +168,8 @@ export function ProfessionalDetail() {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: `${professional!.business_name} — Salinas Serviços`,
-          text: `Conheça ${professional!.business_name} em Salinas da Margarida.`,
+          title: `${professional!.business_name} — ${APP_NAME}`,
+          text: `Conheça ${professional!.business_name} em ${CITY_NAME}.`,
           url,
         })
       } else {
@@ -174,22 +183,22 @@ export function ProfessionalDetail() {
 
   return (
     <div className="container-wide pt-6 sm:pt-10">
-      <div className="mb-5 flex items-center justify-between gap-3">
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <Link
           to="/profissionais"
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-deep/55 transition hover:text-tide"
+          className="inline-flex items-center gap-1.5 text-sm font-bold text-muted transition hover:text-ocean"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Voltar para profissionais
         </Link>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => void handleShare()}
-            className="grid h-9 w-9 place-items-center rounded-full border border-[var(--line)] bg-white text-deep/55 transition hover:border-tide hover:text-tide"
+            className="icon-btn h-9! w-9!"
             aria-label="Compartilhar perfil"
           >
-            <Share2 className="h-4 w-4" />
+            <Share2 className="h-4 w-4" aria-hidden="true" />
           </button>
           <button
             type="button"
@@ -198,38 +207,36 @@ export function ProfessionalDetail() {
               'grid h-9 w-9 place-items-center rounded-full border transition',
               favorite
                 ? 'border-coral bg-coral text-white'
-                : 'border-[var(--line)] bg-white text-deep/55 hover:border-coral hover:text-coral',
+                : 'border-line bg-surface text-muted hover:border-coral hover:text-coral',
             )}
             aria-label={favorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+            aria-pressed={favorite}
           >
-            <Heart className={cn('h-4 w-4', favorite && 'fill-current')} />
+            <Heart className={cn('h-4 w-4', favorite && 'fill-current')} aria-hidden="true" />
           </button>
           {owner ? (
-            <Link
-              to={isAdmin ? '/admin' : '/painel'}
-              className="btn btn-soft px-3! py-2!"
-            >
-              <Pencil className="h-4 w-4" />
+            <Link to={isAdmin ? '/admin' : '/painel'} className="btn btn-soft px-3! py-2!">
+              <Pencil className="h-4 w-4" aria-hidden="true" />
               Editar
             </Link>
           ) : null}
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+      <div className="grid gap-6 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
         <div className="space-y-4">
           <div className="card overflow-hidden">
             {photos.length ? (
               <>
-                <div className="relative aspect-[4/3] bg-gradient-to-br from-deep to-tide">
+                <div className="relative aspect-[4/3] bg-brand-deep">
                   <img
                     src={photos[activePhoto] ?? photos[0]}
                     alt={`${professional.business_name} — foto ${activePhoto + 1}`}
                     className="h-full w-full object-cover"
                   />
                   {professional.is_featured ? (
-                    <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-gold px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-deep-900 shadow">
-                      <Star className="h-3.5 w-3.5 fill-current" />
+                    <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-sun px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wide text-brand-deep shadow">
+                      <Star className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
                       Destaque do mês
                     </span>
                   ) : null}
@@ -242,10 +249,13 @@ export function ProfessionalDetail() {
                         type="button"
                         onClick={() => setActivePhoto(index)}
                         className={cn(
-                          'h-16 w-20 overflow-hidden rounded-lg border-2 transition',
-                          activePhoto === index ? 'border-tide' : 'border-transparent opacity-70',
+                          'h-16 w-20 overflow-hidden rounded-xl border-2 transition',
+                          activePhoto === index
+                            ? 'border-ocean'
+                            : 'border-transparent opacity-70 hover:opacity-100',
                         )}
                         aria-label={`Ver foto ${index + 1}`}
+                        aria-pressed={activePhoto === index}
                       >
                         <img src={photo} alt="" className="h-full w-full object-cover" />
                       </button>
@@ -254,9 +264,11 @@ export function ProfessionalDetail() {
                 ) : null}
               </>
             ) : (
-              <div className="flex aspect-[4/3] flex-col items-center justify-center gap-3 bg-gradient-to-br from-deep to-tide text-white">
-                <span className="display text-7xl font-bold">{initials(professional.business_name)}</span>
-                <CategoryIcon name={professional.category?.icon} className="h-7 w-7 text-gold" />
+              <div className="flex aspect-[4/3] flex-col items-center justify-center gap-3 bg-gradient-to-br from-brand-deep to-ocean text-white">
+                <span className="display text-7xl font-extrabold">
+                  {initials(professional.business_name)}
+                </span>
+                <CategoryIcon name={professional.category?.icon} className="h-7 w-7 text-sun" />
               </div>
             )}
           </div>
@@ -265,27 +277,27 @@ export function ProfessionalDetail() {
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <p className="eyebrow">{professional.category?.name || 'Serviço local'}</p>
-                <h1 className="display mt-1 text-3xl font-bold leading-tight text-deep sm:text-4xl">
+                <h1 className="display mt-1 text-balance text-3xl font-extrabold leading-tight text-ink sm:text-4xl">
                   {professional.business_name}
                 </h1>
-                <p className="mt-2 flex items-center gap-1.5 text-sm text-deep/55">
-                  <MapPin className="h-4 w-4 text-tide" />
-                  {professional.neighborhood || 'Salinas da Margarida'}
+                <p className="mt-2 flex items-center gap-1.5 text-sm text-muted">
+                  <MapPin className="h-4 w-4 text-ocean" aria-hidden="true" />
+                  {professional.neighborhood || CITY_NAME}
                   {professional.address ? ` · ${professional.address}` : ''}
                 </p>
               </div>
-              <div className="flex items-center gap-2 rounded-full bg-sand-dark px-3.5 py-2 text-xs font-bold text-deep/65">
-                <ThumbsUp className="h-4 w-4 text-tide" />
+              <div className="flex items-center gap-2 rounded-full bg-surface-2 px-3.5 py-2 text-xs font-bold text-muted">
+                <ThumbsUp className="h-4 w-4 text-ocean" aria-hidden="true" />
                 {formatNumber(recommendations)} recomendações
               </div>
             </div>
 
             {professional.description ? (
-              <p className="mt-5 whitespace-pre-line text-sm leading-relaxed text-deep/70 sm:text-base">
+              <p className="mt-5 whitespace-pre-line text-pretty text-sm leading-relaxed text-ink/75 sm:text-base">
                 {professional.description}
               </p>
             ) : (
-              <p className="mt-5 text-sm text-deep/50">
+              <p className="mt-5 text-sm text-muted">
                 Este profissional ainda não adicionou uma descrição.
               </p>
             )}
@@ -298,7 +310,7 @@ export function ProfessionalDetail() {
                 onClick={() => void registerWhatsAppClick(professional.id)}
                 className="btn btn-primary flex-1 py-3!"
               >
-                <MessageCircle className="h-4 w-4" />
+                <MessageCircle className="h-4 w-4" aria-hidden="true" />
                 Chamar no WhatsApp
               </a>
               <button
@@ -307,18 +319,19 @@ export function ProfessionalDetail() {
                 disabled={recommended || recommending}
                 className={cn(
                   'btn flex-1 py-3!',
-                  recommended
-                    ? 'border border-tide/30 bg-tide/10 text-tide'
-                    : 'btn-soft',
+                  recommended ? 'border border-ocean/30 bg-ocean/10 text-ocean' : 'btn-soft',
                 )}
               >
-                <ThumbsUp className={cn('h-4 w-4', recommended && 'fill-current')} />
+                <ThumbsUp
+                  className={cn('h-4 w-4', recommended && 'fill-current')}
+                  aria-hidden="true"
+                />
                 {recommended ? 'Você recomendou' : 'Recomendar'}
               </button>
             </div>
 
-            <div className="mt-5 flex items-center gap-2 text-xs text-deep/40">
-              <BadgeCheck className="h-4 w-4 text-tide" />
+            <div className="mt-5 flex items-center gap-2 text-xs text-muted">
+              <BadgeCheck className="h-4 w-4 text-ocean" aria-hidden="true" />
               Contato direto com o profissional, sem intermediários.
             </div>
           </div>
@@ -326,37 +339,42 @@ export function ProfessionalDetail() {
 
         <aside className="space-y-4 lg:sticky lg:top-24">
           <div className="card p-6">
-            <h2 className="display text-xl font-bold text-deep">Informações</h2>
+            <h2 className="display text-xl font-extrabold text-ink">Informações</h2>
             <dl className="mt-4 space-y-4 text-sm">
               <div>
-                <dt className="text-[10px] font-bold uppercase tracking-wider text-deep/35">
+                <dt className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted">
                   Categoria
                 </dt>
-                <dd className="mt-1 flex items-center gap-2 font-semibold text-deep">
-                  <CategoryIcon name={professional.category?.icon} className="h-4 w-4 text-tide" />
+                <dd className="mt-1 flex items-center gap-2 font-bold text-ink">
+                  <CategoryIcon
+                    name={professional.category?.icon}
+                    className="h-4 w-4 text-ocean"
+                  />
                   {professional.category?.name || 'Outros serviços'}
                 </dd>
               </div>
               <div>
-                <dt className="text-[10px] font-bold uppercase tracking-wider text-deep/35">
+                <dt className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted">
                   WhatsApp
                 </dt>
-                <dd className="mt-1 font-semibold text-deep">{formatPhone(professional.whatsapp)}</dd>
+                <dd className="mt-1 font-bold text-ink">
+                  {formatPhone(professional.whatsapp)}
+                </dd>
               </div>
               <div>
-                <dt className="text-[10px] font-bold uppercase tracking-wider text-deep/35">
+                <dt className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted">
                   Atendimento
                 </dt>
-                <dd className="mt-1 font-semibold text-deep">
-                  {professional.neighborhood || 'Salinas da Margarida'}
+                <dd className="mt-1 font-bold text-ink">
+                  {professional.neighborhood || CITY_NAME}
                 </dd>
               </div>
               {professional.address ? (
                 <div>
-                  <dt className="text-[10px] font-bold uppercase tracking-wider text-deep/35">
+                  <dt className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted">
                     Endereço
                   </dt>
-                  <dd className="mt-1 leading-relaxed text-deep/70">{professional.address}</dd>
+                  <dd className="mt-1 leading-relaxed text-ink/70">{professional.address}</dd>
                 </div>
               ) : null}
             </dl>
@@ -364,9 +382,9 @@ export function ProfessionalDetail() {
 
           <RatingNotice />
 
-          <div className="rounded-2xl border border-gold/30 bg-gold/10 p-5">
-            <p className="text-sm font-bold text-deep">Gostou do atendimento?</p>
-            <p className="mt-1 text-xs leading-relaxed text-deep/55">
+          <div className="rounded-2xl border border-sun/40 bg-sun/10 p-5">
+            <p className="text-sm font-extrabold text-ink">Gostou do atendimento?</p>
+            <p className="mt-1 text-xs leading-relaxed text-muted">
               Recomende este profissional para que mais pessoas da comunidade encontrem um bom
               serviço.
             </p>
@@ -379,11 +397,11 @@ export function ProfessionalDetail() {
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="eyebrow">Talvez você precise</p>
-              <h2 className="display mt-1 text-2xl font-bold text-deep sm:text-3xl">
+              <h2 className="display mt-1 text-2xl font-extrabold text-ink sm:text-3xl">
                 Outros profissionais
               </h2>
             </div>
-            <Link to="/profissionais" className="text-sm font-semibold text-tide hover:underline">
+            <Link to="/profissionais" className="text-sm font-bold text-ocean hover:underline">
               Ver todos
             </Link>
           </div>

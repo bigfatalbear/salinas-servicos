@@ -44,25 +44,25 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div
             key={item.id}
             className={cn(
-              'pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border bg-white px-4 py-3 text-sm shadow-xl',
-              item.kind === 'success' && 'border-tide/30',
+              'pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border bg-surface px-4 py-3 text-sm shadow-xl',
+              item.kind === 'success' && 'border-ocean/30',
               item.kind === 'error' && 'border-coral/30',
-              item.kind === 'info' && 'border-deep/15',
+              item.kind === 'info' && 'border-line',
             )}
           >
             {item.kind === 'success' ? (
-              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-tide" />
+              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-ocean" />
             ) : item.kind === 'error' ? (
               <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-coral" />
             ) : (
-              <Info className="mt-0.5 h-4 w-4 shrink-0 text-deep" />
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-ink" />
             )}
-            <p className="flex-1 leading-snug text-deep">{item.message}</p>
+            <p className="flex-1 leading-snug text-ink">{item.message}</p>
             <button
               type="button"
               aria-label="Fechar aviso"
               onClick={() => setToasts((current) => current.filter((toastItem) => toastItem.id !== item.id))}
-              className="text-deep/40 transition hover:text-deep"
+              className="text-muted transition hover:text-ink"
             >
               <X className="h-4 w-4" />
             </button>

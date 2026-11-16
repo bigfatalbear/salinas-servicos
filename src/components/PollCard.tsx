@@ -45,7 +45,7 @@ export function PollCard() {
   return (
     <section className="card overflow-hidden">
       <div className="grid gap-0 md:grid-cols-[1fr_1.15fr]">
-        <div className="bg-deep p-6 text-white sm:p-8">
+        <div className="bg-brand-deep p-6 text-white sm:p-8">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-gold">
             <Vote className="h-3.5 w-3.5" />
             Enquete rápida
@@ -68,7 +68,7 @@ export function PollCard() {
         <div className="p-5 sm:p-7">
           {voted ? (
             <div className="space-y-4">
-              <p className="flex items-center gap-2 text-sm font-semibold text-tide">
+              <p className="flex items-center gap-2 text-sm font-semibold text-ocean">
                 <Check className="h-4 w-4" />
                 Você já votou. Veja como está a comunidade:
               </p>
@@ -79,17 +79,17 @@ export function PollCard() {
                   return (
                     <div key={option.key}>
                       <div className="mb-1.5 flex items-center justify-between gap-3 text-xs font-semibold">
-                        <span className={cn(voted === option.key ? 'text-deep' : 'text-deep/55')}>
+                        <span className={cn(voted === option.key ? 'text-ink' : 'text-ink/55')}>
                           {option.label}
                           {voted === option.key ? ' · seu voto' : ''}
                         </span>
-                        <span className="text-deep/45">{percent}%</span>
+                        <span className="text-ink/45">{percent}%</span>
                       </div>
-                      <div className="h-2 overflow-hidden rounded-full bg-sand-dark">
+                      <div className="h-2 overflow-hidden rounded-full bg-surface-2">
                         <div
                           className={cn(
                             'h-full rounded-full transition-all duration-700',
-                            voted === option.key ? 'bg-tide' : 'bg-deep/20',
+                            voted === option.key ? 'bg-ocean' : 'bg-ink/20',
                           )}
                           style={{ width: `${percent}%` }}
                         />
@@ -98,13 +98,13 @@ export function PollCard() {
                   )
                 })}
               </div>
-              <p className="text-xs text-deep/45">
+              <p className="text-xs text-ink/45">
                 {total === 0 ? 'Ainda não há votos suficientes para mostrar os percentuais.' : 'Resultado atualizado em tempo real.'}
               </p>
             </div>
           ) : (
             <div className="space-y-2.5">
-              <p className="mb-3 text-xs font-bold uppercase tracking-wider text-deep/45">
+              <p className="mb-3 text-xs font-bold uppercase tracking-wider text-ink/45">
                 Escolha uma opção
               </p>
               {POLL_OPTIONS.map((option) => (
@@ -113,19 +113,19 @@ export function PollCard() {
                   type="button"
                   disabled={busy}
                   onClick={() => void handleVote(option.key)}
-                  className="flex w-full items-center justify-between gap-3 rounded-xl border border-[var(--line)] bg-white px-4 py-3 text-left text-sm font-semibold text-deep transition hover:border-tide hover:bg-sand/60 disabled:opacity-60"
+                  className="flex w-full items-center justify-between gap-3 rounded-xl border border-line bg-surface px-4 py-3 text-left text-sm font-semibold text-ink transition hover:border-tide hover:bg-surface-2 disabled:opacity-60"
                 >
                   {option.label}
                   {busy ? (
-                    <Loader2 className="h-4 w-4 animate-spin text-tide" />
+                    <Loader2 className="h-4 w-4 animate-spin text-ocean" />
                   ) : (
-                    <span className="grid h-6 w-6 place-items-center rounded-full border border-[var(--line)] text-[10px] text-deep/35">
+                    <span className="grid h-6 w-6 place-items-center rounded-full border border-line text-[10px] text-ink/35">
                       +
                     </span>
                   )}
                 </button>
               ))}
-              <p className="pt-1 text-[11px] leading-relaxed text-deep/40">
+              <p className="pt-1 text-[11px] leading-relaxed text-ink/40">
                 É rápido, anônimo e você pode votar apenas uma vez neste dispositivo.
               </p>
             </div>

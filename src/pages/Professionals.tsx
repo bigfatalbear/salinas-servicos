@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Filter, Search, SlidersHorizontal, Star, X } from 'lucide-react'
-import { CITY } from '../config'
+import { Filter, MapPin, Search, SlidersHorizontal, Star, X } from 'lucide-react'
+import { APP_NAME, CITY_NAME } from '../config'
+import { LOCALITIES } from '../data/site'
 import { fetchCategories, fetchProfessionals } from '../lib/store'
 import type { Category, Professional } from '../lib/types'
 import { cn } from '../lib/utils'
 import { EmptyState } from '../components/EmptyState'
 import { CardSkeleton } from '../components/Loading'
+import { PageHeader } from '../components/PageHeader'
 import { ProfessionalCard } from '../components/ProfessionalCard'
 
 type SortMode = 'recommended' | 'recent' | 'name'
@@ -18,10 +20,14 @@ export function Professionals() {
   const [loading, setLoading] = useState(true)
   const [text, setText] = useState(searchParams.get('q') ?? '')
   const [category, setCategory] = useState(searchParams.get('categoria') ?? '')
-  const [neighborhood, setNeighborhood] = useState('')
+  const [local, setLocal] = useState(searchParams.get('local') ?? '')
   const [featuredOnly, setFeaturedOnly] = useState(false)
   const [sort, setSort] = useState<SortMode>('recommended')
   const [showFilters, setShowFilters] = useState(false)
+
+  useEffect(() => {
+    document.title = `Profissionais — ${APP_NAME}`
+  }, [])
 
   useEffect(() => {
     let active = true
@@ -42,26 +48,21 @@ export function Professionals() {
   useEffect(() => {
     setText(searchParams.get('q') ?? '')
     setCategory(searchParams.get('categoria') ?? '')
+    setLocal(searchParams.get('local') ?? '')
   }, [searchParams])
-
-  const neighborhoods = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          professionals
-            .map((item) => item.neighborhood?.trim())
-            .filter((item): item is string => Boolean(item)),
-        ),
-      ).sort((a, b) => a.localeCompare(b, 'pt-BR')),
-    [professionals],
-  )
 
   const filtered = useMemo(() => {
     const term = text.trim().toLowerCase()
+    const locality = LOCALITIES.find((item) => item.value === local)
+
     const result = professionals.filter((item) => {
       if (featuredOnly && !item.is_featured) return false
       if (category && item.category?.slug !== category) return false
-      if (neighborhood && item.neighborhood !== neighborhood) return false
+      if (locality) {
+        const neighborhood = (item.neighborhood ?? '').toLowerCase()
+        const matches = locality.match.some((value) => neighborhood.includes(value.toLowerCase()))
+        if (!matches) return false
+      }
       if (!term) return true
       return [item.business_name, item.description, item.category?.name, item.neighborhood]
         .filter(Boolean)
@@ -73,58 +74,60 @@ export function Professionals() {
       if (sort === 'recent') return b.created_at.localeCompare(a.created_at)
       return b.recommendations - a.recommendations
     })
-  }, [professionals, text, category, neighborhood, featuredOnly, sort])
+  }, [professionals, text, category, local, featuredOnly, sort])
 
-  const hasFilters = Boolean(text || category || neighborhood || featuredOnly)
-  const activeCount = [text, category, neighborhood, featuredOnly].filter(Boolean).length
+  const hasFilters = Boolean(text || category || local || featuredOnly)
+  const activeCount = [text, category, local, featuredOnly].filter(Boolean).length
 
   function clearFilters() {
     setText('')
     setCategory('')
-    setNeighborhood('')
+    setLocal('')
     setFeaturedOnly(false)
   }
 
   return (
     <div className="container-wide pt-8 sm:pt-12">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="eyebrow">Diretório local</p>
-          <h1 className="display mt-2 text-4xl font-bold text-deep sm:text-5xl">
-            Profissionais de Salinas
-          </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-deep/60">
-            Busque por nome, serviço ou bairro. Todos os perfis são da comunidade de {CITY}.
+      <PageHeader
+        eyebrow="Diretório local"
+        title="Profissionais de Salinas."
+        description={`Busque por nome, serviço ou localidade. Todos os perfis são da comunidade de ${CITY_NAME}.`}
+        action={
+          <p className="text-sm font-extrabold text-muted">
+            {loading
+              ? 'Carregando...'
+              : `${filtered.length} ${filtered.length === 1 ? 'perfil' : 'perfis'}`}
           </p>
-        </div>
-        <p className="text-sm font-semibold text-deep/45">
-          {loading ? 'Carregando...' : `${filtered.length} ${filtered.length === 1 ? 'perfil' : 'perfis'}`}
-        </p>
-      </div>
+        }
+      />
 
       <div className="card mt-6 p-4 sm:p-5">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
           <label className="relative flex-1">
             <span className="sr-only">Buscar profissional</span>
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-deep/35" />
+            <Search
+              className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+              aria-hidden="true"
+            />
             <input
               value={text}
               onChange={(event) => setText(event.target.value)}
-              placeholder="Busque por nome, serviço ou bairro..."
-              className="field rounded-full! py-3! pl-11!"
+              placeholder="Nome, serviço ou bairro..."
+              className="field min-h-12 rounded-full! pl-11!"
             />
           </label>
 
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button
               type="button"
               onClick={() => setShowFilters((current) => !current)}
-              className={cn('btn btn-soft shrink-0', showFilters && 'border-tide! text-tide!')}
+              className={cn('btn btn-soft shrink-0', showFilters && 'border-ocean! text-ocean!')}
+              aria-expanded={showFilters}
             >
-              <SlidersHorizontal className="h-4 w-4" />
+              <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
               Filtros
               {hasFilters ? (
-                <span className="grid h-5 min-w-5 place-items-center rounded-full bg-tide px-1 text-[10px] text-white">
+                <span className="grid h-5 min-w-5 place-items-center rounded-full bg-ocean px-1 text-[10px] text-white">
                   {activeCount}
                 </span>
               ) : null}
@@ -132,21 +135,25 @@ export function Professionals() {
             <button
               type="button"
               onClick={() => setFeaturedOnly((current) => !current)}
+              aria-pressed={featuredOnly}
               className={cn(
                 'btn shrink-0 border',
                 featuredOnly
-                  ? 'border-gold bg-gold text-deep-900'
-                  : 'border-[var(--line)] bg-white text-deep/60',
+                  ? 'border-sun bg-sun text-brand-deep'
+                  : 'border-line bg-surface text-muted hover:border-ocean hover:text-ocean',
               )}
             >
-              <Star className={cn('h-4 w-4', featuredOnly && 'fill-current')} />
+              <Star
+                className={cn('h-4 w-4', featuredOnly && 'fill-current')}
+                aria-hidden="true"
+              />
               Destaques
             </button>
           </div>
         </div>
 
         {showFilters ? (
-          <div className="mt-4 grid gap-3 border-t border-[var(--line)] pt-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-4 grid gap-3 border-t border-line pt-4 sm:grid-cols-2 lg:grid-cols-3">
             <label>
               <span className="field-label">Categoria</span>
               <select
@@ -164,16 +171,16 @@ export function Professionals() {
             </label>
 
             <label>
-              <span className="field-label">Bairro ou distrito</span>
+              <span className="field-label">Localidade</span>
               <select
-                value={neighborhood}
-                onChange={(event) => setNeighborhood(event.target.value)}
+                value={local}
+                onChange={(event) => setLocal(event.target.value)}
                 className="field"
               >
-                <option value="">Todos os bairros</option>
-                {neighborhoods.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
+                <option value="">Todas as localidades</option>
+                {LOCALITIES.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {item.name}
                   </option>
                 ))}
               </select>
@@ -196,28 +203,26 @@ export function Professionals() {
 
         {hasFilters ? (
           <div className="mt-3 flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-deep/35">
-              <Filter className="h-3 w-3" />
+            <span className="inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-[0.12em] text-muted">
+              <Filter className="h-3 w-3" aria-hidden="true" />
               Filtros ativos
             </span>
             {text ? (
               <button type="button" onClick={() => setText('')} className="chip chip-active">
-                “{text}” <X className="h-3 w-3" />
+                “{text}” <X className="h-3 w-3" aria-hidden="true" />
               </button>
             ) : null}
             {category ? (
               <button type="button" onClick={() => setCategory('')} className="chip chip-active">
                 {categories.find((item) => item.slug === category)?.name ?? category}
-                <X className="h-3 w-3" />
+                <X className="h-3 w-3" aria-hidden="true" />
               </button>
             ) : null}
-            {neighborhood ? (
-              <button
-                type="button"
-                onClick={() => setNeighborhood('')}
-                className="chip chip-active"
-              >
-                {neighborhood} <X className="h-3 w-3" />
+            {local ? (
+              <button type="button" onClick={() => setLocal('')} className="chip chip-active">
+                <MapPin className="h-3 w-3" aria-hidden="true" />
+                {local}
+                <X className="h-3 w-3" aria-hidden="true" />
               </button>
             ) : null}
             {featuredOnly ? (
@@ -226,13 +231,13 @@ export function Professionals() {
                 onClick={() => setFeaturedOnly(false)}
                 className="chip chip-active"
               >
-                Destaques <X className="h-3 w-3" />
+                Destaques <X className="h-3 w-3" aria-hidden="true" />
               </button>
             ) : null}
             <button
               type="button"
               onClick={clearFilters}
-              className="text-xs font-semibold text-tide underline-offset-2 hover:underline"
+              className="text-xs font-bold text-ocean underline-offset-2 hover:underline"
             >
               Limpar tudo
             </button>
@@ -257,7 +262,7 @@ export function Professionals() {
           <EmptyState
             icon={Search}
             title="Nenhum profissional encontrado"
-            description="Tente buscar por outro serviço, bairro ou remova os filtros para ver todos os perfis."
+            description="Tente buscar por outro serviço, localidade ou remova os filtros para ver todos os perfis."
             action={
               <button type="button" onClick={clearFilters} className="btn btn-primary">
                 Limpar filtros

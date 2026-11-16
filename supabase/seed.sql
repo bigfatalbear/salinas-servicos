@@ -10,7 +10,9 @@ insert into public.categories (name, slug, icon, sort_order) values
   ('Cozinheira', 'cozinheira', 'chef-hat', 9),
   ('Fotógrafo', 'fotografo', 'camera', 10),
   ('Passeios', 'passeios', 'sailboat', 11),
-  ('Outros serviços', 'outros-servicos', 'grid', 12)
+  ('Venda de mariscos e peixes', 'venda-de-mariscos-e-peixes', 'fish', 12),
+  ('Táxi e transporte', 'taxi-e-transporte', 'car-taxi-front', 13),
+  ('Outros serviços', 'outros-servicos', 'grid', 14)
 on conflict (slug) do update set
   name = excluded.name,
   icon = excluded.icon,

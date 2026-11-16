@@ -5,19 +5,71 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0b3b5a" />
+    <meta name="theme-color" content="#087ea4" />
     <meta
       name="description"
-      content="Encontre profissionais de confiança em Salinas da Margarida — BA. Eletricistas, manicures, fretes, diaristas e muito mais."
+      content="Encontre profissionais, serviços e comércios de Salinas da Margarida, na Baía de Todos-os-Santos. Contato direto pelo WhatsApp e recomendação da comunidade."
     />
-    <meta property="og:title" content="Salinas Serviços — profissionais da nossa cidade" />
+    <meta name="application-name" content="Salinas Serviços" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Salinas Serviços" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="canonical" href="https://bigfatalbear.github.io/salinas-servicos/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Salinas Serviços" />
+    <meta property="og:title" content="Salinas Serviços — a cidade se conecta aqui" />
     <meta
       property="og:description"
-      content="O guia de profissionais de Salinas da Margarida — BA. Busque, favorite e fale direto no WhatsApp."
+      content="O guia de profissionais, serviços e comércios de Salinas da Margarida. Busque, favorite e fale direto no WhatsApp."
     />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://bigfatalbear.github.io/salinas-servicos/pwa-512.png" />
-    <title>Salinas Serviços — profissionais da nossa cidade</title>
+    <meta property="og:url" content="https://bigfatalbear.github.io/salinas-servicos/" />
+    <meta
+      property="og:image"
+      content="https://bigfatalbear.github.io/salinas-servicos/pwa-512.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Salinas Serviços — a cidade se conecta aqui" />
+    <meta
+      name="twitter:description"
+      content="Encontre profissionais e comércios de Salinas da Margarida com contato direto pelo WhatsApp."
+    />
+    <meta
+      name="twitter:image"
+      content="https://bigfatalbear.github.io/salinas-servicos/pwa-512.png"
+    />
+    <title>Salinas Serviços — a cidade se conecta aqui</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Salinas Serviços",
+        "url": "https://bigfatalbear.github.io/salinas-servicos/",
+        "description": "Guia de profissionais, serviços e comércios de Salinas da Margarida, Bahia.",
+        "inLanguage": "pt-BR",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://bigfatalbear.github.io/salinas-servicos/profissionais?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+    <script>
+      ;(function () {
+        try {
+          var key = 'ss:theme'
+          var mode = localStorage.getItem(key)
+          var dark =
+            mode === 'dark' ||
+            (mode !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+          document.documentElement.style.colorScheme = dark ? 'dark' : 'light'
+        } catch (error) {
+          document.documentElement.dataset.theme = 'light'
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

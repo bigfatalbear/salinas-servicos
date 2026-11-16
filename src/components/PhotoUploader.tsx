@@ -50,16 +50,16 @@ export function PhotoUploader({
   return (
     <div>
       <p className="field-label">{slot === 1 ? 'Foto principal' : 'Segunda foto (opcional)'}</p>
-      <div className="group relative aspect-square overflow-hidden rounded-2xl border-2 border-dashed border-[var(--line)] bg-sand">
+      <div className="group relative aspect-square overflow-hidden rounded-2xl border-2 border-dashed border-line bg-surface-2">
         {url ? (
           <>
             <img src={imageUrl(url)} alt={`Foto ${slot}`} className="h-full w-full object-cover" />
-            <div className="absolute inset-0 flex items-center justify-center gap-2 bg-deep/55 opacity-0 transition group-hover:opacity-100">
+            <div className="absolute inset-0 flex items-center justify-center gap-2 bg-brand-deep/55 opacity-0 transition group-hover:opacity-100">
               <button
                 type="button"
                 onClick={() => inputRef.current?.click()}
                 disabled={busy}
-                className="grid h-9 w-9 place-items-center rounded-full bg-white text-deep transition hover:bg-gold"
+                className="grid h-9 w-9 place-items-center rounded-full bg-surface text-ink transition hover:bg-sun"
                 aria-label="Trocar foto"
               >
                 <Camera className="h-4 w-4" />
@@ -68,7 +68,7 @@ export function PhotoUploader({
                 type="button"
                 onClick={() => void handleRemove()}
                 disabled={busy}
-                className="grid h-9 w-9 place-items-center rounded-full bg-white text-coral transition hover:bg-coral hover:text-white"
+                className="grid h-9 w-9 place-items-center rounded-full bg-surface text-coral transition hover:bg-coral hover:text-white"
                 aria-label="Remover foto"
               >
                 <Trash2 className="h-4 w-4" />
@@ -80,19 +80,19 @@ export function PhotoUploader({
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={busy}
-            className="flex h-full w-full flex-col items-center justify-center gap-2 p-4 text-center text-deep/40 transition hover:bg-sand-dark/60 hover:text-tide"
+            className="flex h-full w-full flex-col items-center justify-center gap-2 p-4 text-center text-muted transition hover:bg-surface-2 hover:text-ocean"
           >
-            <span className="grid h-11 w-11 place-items-center rounded-full bg-white text-tide shadow-sm">
+            <span className="grid h-11 w-11 place-items-center rounded-full bg-surface text-ocean shadow-sm">
               <ImagePlus className="h-5 w-5" />
             </span>
             <span className="text-xs font-semibold">Enviar foto</span>
-            <span className="text-[10px] leading-tight text-deep/35">JPG ou PNG · até 8 MB</span>
+            <span className="text-[10px] leading-tight text-muted">JPG ou PNG · até 8 MB</span>
           </button>
         )}
 
         {busy ? (
-          <div className="absolute inset-0 grid place-items-center bg-white/70 backdrop-blur-sm">
-            <Loader2 className="h-6 w-6 animate-spin text-tide" />
+          <div className="absolute inset-0 grid place-items-center bg-surface/70 backdrop-blur-sm">
+            <Loader2 className="h-6 w-6 animate-spin text-ocean" />
           </div>
         ) : null}
       </div>

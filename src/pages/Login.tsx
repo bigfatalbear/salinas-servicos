@@ -109,11 +109,11 @@ export function Login() {
     return (
       <div className="container-page py-16">
         <div className="card mx-auto max-w-lg p-8 text-center">
-          <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-tide/10 text-tide">
+          <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-ocean/10 text-ocean">
             <BadgeCheck className="h-7 w-7" />
           </span>
-          <h1 className="display mt-4 text-3xl font-bold text-deep">Você já está conectado</h1>
-          <p className="mt-2 text-sm leading-relaxed text-deep/60">
+          <h1 className="display mt-4 text-3xl font-extrabold text-ink">Você já está conectado</h1>
+          <p className="mt-2 text-sm leading-relaxed text-muted">
             Acesse seu painel para editar o perfil, fotos e acompanhar os contatos.
           </p>
           <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
@@ -132,10 +132,10 @@ export function Login() {
 
   return (
     <div className="container-wide py-8 sm:py-14">
-      <div className="grid overflow-hidden rounded-[2rem] border border-[var(--line)] bg-white shadow-[0_30px_90px_-45px_rgba(11,59,90,0.45)] lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="relative hidden overflow-hidden bg-deep p-9 text-white lg:block">
+      <div className="grid overflow-hidden rounded-[2rem] border border-line bg-surface shadow-[0_30px_90px_-45px_rgba(11,59,90,0.45)] lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="relative hidden overflow-hidden bg-brand-deep p-9 text-white lg:block">
           <div className="absolute -right-16 -top-20 h-64 w-64 rounded-full border-[28px] border-gold/15" />
-          <div className="absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-tide/25 blur-2xl" />
+          <div className="absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-ocean/25 blur-2xl" />
           <div className="relative">
             <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-gold">
               <Store className="h-3.5 w-3.5" />
@@ -173,13 +173,13 @@ export function Login() {
         </div>
 
         <div className="p-6 sm:p-9 lg:p-12">
-          <div className="flex items-center gap-1 rounded-full bg-sand p-1">
+          <div className="flex items-center gap-1 rounded-full bg-surface-2 p-1">
             <button
               type="button"
               onClick={() => setMode('entrar')}
               className={cn(
                 'flex-1 rounded-full px-4 py-2.5 text-sm font-semibold transition',
-                mode === 'entrar' ? 'bg-white text-deep shadow-sm' : 'text-deep/50',
+                mode === 'entrar' ? 'bg-surface text-ink shadow-sm' : 'text-muted',
               )}
             >
               Entrar
@@ -189,17 +189,17 @@ export function Login() {
               onClick={() => setMode('cadastro')}
               className={cn(
                 'flex-1 rounded-full px-4 py-2.5 text-sm font-semibold transition',
-                mode === 'cadastro' ? 'bg-white text-deep shadow-sm' : 'text-deep/50',
+                mode === 'cadastro' ? 'bg-surface text-ink shadow-sm' : 'text-muted',
               )}
             >
               Criar perfil
             </button>
           </div>
 
-          <h1 className="display mt-7 text-3xl font-bold text-deep">
+          <h1 className="display mt-7 text-3xl font-extrabold text-ink">
             {mode === 'entrar' ? 'Que bom te ver por aqui.' : 'Vamos criar seu perfil.'}
           </h1>
-          <p className="mt-2 text-sm leading-relaxed text-deep/55">
+          <p className="mt-2 text-sm leading-relaxed text-muted">
             {mode === 'entrar'
               ? 'Acesse para editar seu perfil, fotos e acompanhar seus contatos.'
               : 'Preencha os dados principais. Você poderá ajustar tudo depois no painel.'}
@@ -286,7 +286,7 @@ export function Login() {
             <label className="block">
               <span className="field-label">E-mail</span>
               <span className="relative block">
-                <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-deep/30" />
+                <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
                 <input
                   type="email"
                   value={form.email}
@@ -302,7 +302,7 @@ export function Login() {
             <label className="block">
               <span className="field-label">Senha</span>
               <span className="relative block">
-                <LockKeyhole className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-deep/30" />
+                <LockKeyhole className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={form.password}
@@ -316,7 +316,7 @@ export function Login() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((current) => !current)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-deep/35 transition hover:text-deep"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted transition hover:text-ink"
                   aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -337,14 +337,14 @@ export function Login() {
             </button>
           </form>
 
-          <p className="mt-5 text-center text-xs leading-relaxed text-deep/40">
+          <p className="mt-5 text-center text-xs leading-relaxed text-muted">
             {mode === 'entrar' ? (
               <>
                 Ainda não tem perfil?{' '}
                 <button
                   type="button"
                   onClick={() => setMode('cadastro')}
-                  className="font-semibold text-tide hover:underline"
+                  className="font-semibold text-ocean hover:underline"
                 >
                   Cadastre seu serviço
                 </button>
@@ -357,8 +357,8 @@ export function Login() {
             )}
           </p>
 
-          <div className="mt-5 flex items-center justify-center gap-1.5 text-[11px] text-deep/35">
-            <CategoryIcon name="sparkles" className="h-3.5 w-3.5 text-tide" />
+          <div className="mt-5 flex items-center justify-center gap-1.5 text-[11px] text-muted">
+            <CategoryIcon name="sparkles" className="h-3.5 w-3.5 text-ocean" />
             Feito para profissionais de Salinas da Margarida
           </div>
         </div>

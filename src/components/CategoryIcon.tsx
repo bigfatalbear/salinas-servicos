@@ -1,7 +1,9 @@
 import {
   Camera,
   Car,
+  CarTaxiFront,
   ChefHat,
+  Fish,
   Grid2X2,
   Hammer,
   Home,
@@ -22,6 +24,8 @@ const icons: Record<string, LucideIcon> = {
   paintbrush: Paintbrush,
   scissors: Scissors,
   car: Car,
+  'car-taxi-front': CarTaxiFront,
+  fish: Fish,
   home: Home,
   'chef-hat': ChefHat,
   camera: Camera,

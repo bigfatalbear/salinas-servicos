@@ -2,9 +2,9 @@ import { Loader2 } from 'lucide-react'
 
 export function Loading({ label = 'Carregando...' }: { label?: string }) {
   return (
-    <div className="flex min-h-64 flex-col items-center justify-center gap-3 text-deep/55">
-      <Loader2 className="h-7 w-7 animate-spin text-tide" />
-      <p className="text-sm font-medium">{label}</p>
+    <div className="flex min-h-64 flex-col items-center justify-center gap-3 text-muted">
+      <Loader2 className="h-7 w-7 animate-spin text-ocean" />
+      <p className="text-sm font-semibold">{label}</p>
     </div>
   )
 }
