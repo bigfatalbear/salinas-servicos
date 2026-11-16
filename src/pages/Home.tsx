@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   ArrowRight,
+  Handshake,
   MapPin,
+  Megaphone,
   MessageCircle,
   Sparkles,
   Store,
@@ -94,6 +96,62 @@ export function Home() {
     <div className="overflow-hidden">
       <section className="relative">
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_85%_8%,rgba(39,197,217,0.18),transparent_34rem),radial-gradient(circle_at_8%_70%,rgba(245,197,66,0.18),transparent_28rem)]" />
+        <div className="container-wide pt-5 sm:pt-7">
+          <div className="grid grid-cols-2 gap-3">
+            <Link
+              to="/entrar?modo=cadastro"
+              className="group relative flex min-h-[8rem] flex-col justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-br from-sun to-[#ffd968] p-4 text-brand-deep! shadow-[0_18px_36px_-20px_rgba(245,197,66,0.85)] ring-1 ring-black/5 transition duration-300 hover:-translate-y-0.5 hover:brightness-105 sm:min-h-[6rem] sm:flex-row sm:items-center sm:gap-3 sm:p-5"
+            >
+              <span className="flex w-full items-start justify-between sm:w-auto sm:items-center">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-deep/10 sm:h-11 sm:w-11">
+                  <Megaphone className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <ArrowRight
+                  className="h-4 w-4 shrink-0 opacity-60 transition duration-300 group-hover:translate-x-0.5 sm:hidden"
+                  aria-hidden="true"
+                />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-lg font-extrabold leading-tight">
+                  Anunciar
+                </span>
+                <span className="mt-0.5 block text-xs font-semibold leading-snug text-brand-deep/70">
+                  Divulgue seu serviço
+                </span>
+              </span>
+              <ArrowRight
+                className="ml-auto hidden h-4 w-4 shrink-0 opacity-60 transition duration-300 group-hover:translate-x-0.5 sm:block"
+                aria-hidden="true"
+              />
+            </Link>
+            <Link
+              to="/profissionais"
+              className="group relative flex min-h-[8rem] flex-col justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-br from-ocean to-ocean-dark p-4 text-white! shadow-[0_18px_36px_-20px_rgba(8,126,164,0.9)] ring-1 ring-black/5 transition duration-300 hover:-translate-y-0.5 hover:brightness-110 sm:min-h-[6rem] sm:flex-row sm:items-center sm:gap-3 sm:p-5"
+            >
+              <span className="flex w-full items-start justify-between sm:w-auto sm:items-center">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/15 sm:h-11 sm:w-11">
+                  <Handshake className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <ArrowRight
+                  className="h-4 w-4 shrink-0 opacity-60 transition duration-300 group-hover:translate-x-0.5 sm:hidden"
+                  aria-hidden="true"
+                />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-lg font-extrabold leading-tight">
+                  Contratar
+                </span>
+                <span className="mt-0.5 block text-xs font-semibold leading-snug text-white/75">
+                  Encontre profissionais
+                </span>
+              </span>
+              <ArrowRight
+                className="ml-auto hidden h-4 w-4 shrink-0 opacity-60 transition duration-300 group-hover:translate-x-0.5 sm:block"
+                aria-hidden="true"
+              />
+            </Link>
+          </div>
+        </div>
         <div className="container-wide grid gap-10 pb-12 pt-9 sm:pt-14 lg:grid-cols-[1.04fr_0.96fr] lg:items-center lg:pb-20">
           <div className="animate-fade-up">
             <span className="inline-flex items-center gap-2 rounded-full border border-ocean/15 bg-surface/75 px-3.5 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-ocean backdrop-blur">
