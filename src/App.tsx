@@ -26,6 +26,9 @@ const Favorites = lazy(() =>
   import('./pages/Favorites').then((module) => ({ default: module.Favorites })),
 )
 const Login = lazy(() => import('./pages/Login').then((module) => ({ default: module.Login })))
+const ResetPassword = lazy(() =>
+  import('./pages/ResetPassword').then((module) => ({ default: module.ResetPassword })),
+)
 const Dashboard = lazy(() =>
   import('./pages/Dashboard').then((module) => ({ default: module.Dashboard })),
 )
@@ -57,6 +60,7 @@ export default function App() {
             <Route path="turismo" element={<Tourism />} />
             <Route path="favoritos" element={<Favorites />} />
             <Route path="entrar" element={<Login />} />
+            <Route path="redefinir-senha" element={<ResetPassword />} />
             <Route path="sobre" element={<About />} />
             <Route
               path="painel"

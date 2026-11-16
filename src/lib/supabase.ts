@@ -16,3 +16,8 @@ export const supabase = createClient(
     },
   },
 )
+
+export function getAuthRedirectUrl(path: string) {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+  return `${window.location.origin}${base}${path}`
+}

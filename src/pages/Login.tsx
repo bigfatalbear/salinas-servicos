@@ -20,20 +20,23 @@ import type { Category } from '../lib/types'
 import { cn } from '../lib/utils'
 import { CategoryIcon } from '../components/CategoryIcon'
 
-type Mode = 'entrar' | 'cadastro'
+type Mode = 'entrar' | 'cadastro' | 'recuperar'
+
+function parseMode(value: string | null): Mode {
+  return value === 'cadastro' || value === 'recuperar' ? value : 'entrar'
+}
 
 export function Login() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const location = useLocation()
-  const { user, isAdmin, signIn, signUp } = useAuth()
+  const { user, isAdmin, signIn, signUp, requestPasswordReset } = useAuth()
   const { toast } = useToast()
-  const [mode, setMode] = useState<Mode>(
-    searchParams.get('modo') === 'cadastro' ? 'cadastro' : 'entrar',
-  )
+  const [mode, setMode] = useState<Mode>(() => parseMode(searchParams.get('modo')))
   const [categories, setCategories] = useState<Category[]>([])
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [resetSent, setResetSent] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [form, setForm] = useState({
     email: '',
@@ -47,7 +50,7 @@ export function Login() {
   })
 
   useEffect(() => {
-    setMode(searchParams.get('modo') === 'cadastro' ? 'cadastro' : 'entrar')
+    setMode(parseMode(searchParams.get('modo')))
   }, [searchParams])
 
   useEffect(() => {
@@ -60,11 +63,26 @@ export function Login() {
     setForm((current) => ({ ...current, [field]: value }))
   }
 
+  function changeMode(nextMode: Mode) {
+    setMode(nextMode)
+    setError('')
+    setResetSent(false)
+    setShowPassword(false)
+  }
+
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
     setError('')
     setBusy(true)
     try {
+      if (mode === 'recuperar') {
+        if (!form.email.trim()) throw new Error('Informe o e-mail da sua conta.')
+        await requestPasswordReset(form.email.trim())
+        setResetSent(true)
+        toast('Se este e-mail estiver cadastrado, o link foi enviado.', 'success')
+        return
+      }
+
       if (mode === 'entrar') {
         if (!form.email.trim() || !form.password) throw new Error('Preencha e-mail e senha.')
         const role = await signIn(form.email.trim(), form.password)
@@ -90,7 +108,7 @@ export function Login() {
         })
         if (result.needsConfirmation) {
           toast('Cadastro criado! Confirme seu e-mail para entrar.', 'success')
-          setMode('entrar')
+          changeMode('entrar')
         } else {
           toast('Perfil criado com sucesso. Bem-vindo ao Salinas Serviços!', 'success')
           navigate('/painel', { replace: true })
@@ -176,7 +194,7 @@ export function Login() {
           <div className="flex items-center gap-1 rounded-full bg-surface-2 p-1">
             <button
               type="button"
-              onClick={() => setMode('entrar')}
+              onClick={() => changeMode('entrar')}
               className={cn(
                 'flex-1 rounded-full px-4 py-2.5 text-sm font-semibold transition',
                 mode === 'entrar' ? 'bg-surface text-ink shadow-sm' : 'text-muted',
@@ -186,7 +204,7 @@ export function Login() {
             </button>
             <button
               type="button"
-              onClick={() => setMode('cadastro')}
+              onClick={() => changeMode('cadastro')}
               className={cn(
                 'flex-1 rounded-full px-4 py-2.5 text-sm font-semibold transition',
                 mode === 'cadastro' ? 'bg-surface text-ink shadow-sm' : 'text-muted',
@@ -197,14 +215,40 @@ export function Login() {
           </div>
 
           <h1 className="display mt-7 text-3xl font-extrabold text-ink">
-            {mode === 'entrar' ? 'Que bom te ver por aqui.' : 'Vamos criar seu perfil.'}
+            {mode === 'entrar'
+              ? 'Que bom te ver por aqui.'
+              : mode === 'cadastro'
+                ? 'Vamos criar seu perfil.'
+                : 'Recupere seu acesso.'}
           </h1>
           <p className="mt-2 text-sm leading-relaxed text-muted">
             {mode === 'entrar'
               ? 'Acesse para editar seu perfil, fotos e acompanhar seus contatos.'
-              : 'Preencha os dados principais. Você poderá ajustar tudo depois no painel.'}
+              : mode === 'cadastro'
+                ? 'Preencha os dados principais. Você poderá ajustar tudo depois no painel.'
+                : 'Informe o e-mail cadastrado. Enviaremos um link para você criar uma nova senha.'}
           </p>
 
+          {mode === 'recuperar' && resetSent ? (
+            <div className="mt-8 rounded-2xl border border-mangrove/20 bg-mangrove/5 p-5 text-center">
+              <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-mangrove/10 text-mangrove">
+                <Mail className="h-6 w-6" aria-hidden="true" />
+              </span>
+              <h2 className="display mt-3 text-xl font-extrabold text-ink">Link enviado</h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                Se este e-mail estiver cadastrado, você receberá um link para criar uma nova
+                senha. Verifique também a caixa de spam.
+              </p>
+              <button
+                type="button"
+                onClick={() => changeMode('entrar')}
+                className="btn btn-primary mt-5 w-full"
+              >
+                Voltar para entrar
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          ) : (
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             {mode === 'cadastro' ? (
               <>
@@ -299,30 +343,32 @@ export function Login() {
               </span>
             </label>
 
-            <label className="block">
-              <span className="field-label">Senha</span>
-              <span className="relative block">
-                <LockKeyhole className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={form.password}
-                  onChange={(event) => update('password', event.target.value)}
-                  placeholder={mode === 'cadastro' ? 'Mínimo de 6 caracteres' : 'Sua senha'}
-                  className="field pl-10! pr-10!"
-                  autoComplete={mode === 'entrar' ? 'current-password' : 'new-password'}
-                  minLength={6}
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((current) => !current)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted transition hover:text-ink"
-                  aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </span>
-            </label>
+            {mode !== 'recuperar' ? (
+              <label className="block">
+                <span className="field-label">Senha</span>
+                <span className="relative block">
+                  <LockKeyhole className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={form.password}
+                    onChange={(event) => update('password', event.target.value)}
+                    placeholder={mode === 'cadastro' ? 'Mínimo de 6 caracteres' : 'Sua senha'}
+                    className="field pl-10! pr-10!"
+                    autoComplete={mode === 'entrar' ? 'current-password' : 'new-password'}
+                    minLength={6}
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((current) => !current)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted transition hover:text-ink"
+                    aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </span>
+              </label>
+            ) : null}
 
             {error ? (
               <div className="rounded-xl border border-coral/25 bg-coral/5 px-4 py-3 text-sm text-coral">
@@ -332,30 +378,71 @@ export function Login() {
 
             <button type="submit" disabled={busy} className="btn btn-primary w-full py-3!">
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-              {mode === 'entrar' ? 'Entrar no painel' : 'Criar meu perfil'}
+              {mode === 'entrar'
+                ? 'Entrar no painel'
+                : mode === 'cadastro'
+                  ? 'Criar meu perfil'
+                  : 'Enviar link de recuperação'}
               {!busy ? <ArrowRight className="h-4 w-4" /> : null}
             </button>
           </form>
+          )}
 
-          <p className="mt-5 text-center text-xs leading-relaxed text-muted">
+          <div className="mt-5 space-y-2 text-center text-xs leading-relaxed text-muted">
             {mode === 'entrar' ? (
-              <>
+              <p>
                 Ainda não tem perfil?{' '}
                 <button
                   type="button"
-                  onClick={() => setMode('cadastro')}
+                  onClick={() => changeMode('cadastro')}
                   className="font-semibold text-ocean hover:underline"
                 >
                   Cadastre seu serviço
                 </button>
-              </>
+              </p>
+            ) : mode === 'cadastro' ? (
+              <p>
+                Já tem cadastro?{' '}
+                <button
+                  type="button"
+                  onClick={() => changeMode('entrar')}
+                  className="font-semibold text-ocean hover:underline"
+                >
+                  Entrar
+                </button>
+              </p>
             ) : (
-              <>
+              <p>
+                Lembrou a senha?{' '}
+                <button
+                  type="button"
+                  onClick={() => changeMode('entrar')}
+                  className="font-semibold text-ocean hover:underline"
+                >
+                  Voltar para entrar
+                </button>
+              </p>
+            )}
+
+            {mode !== 'recuperar' ? (
+              <p>
+                <button
+                  type="button"
+                  onClick={() => changeMode('recuperar')}
+                  className="font-semibold text-ocean hover:underline"
+                >
+                  Esqueci minha senha
+                </button>
+              </p>
+            ) : null}
+
+            {mode === 'cadastro' ? (
+              <p>
                 Ao criar seu perfil, você concorda em manter as informações atualizadas e
                 respeitar a comunidade.
-              </>
-            )}
-          </p>
+              </p>
+            ) : null}
+          </div>
 
           <div className="mt-5 flex items-center justify-center gap-1.5 text-[11px] text-muted">
             <CategoryIcon name="sparkles" className="h-3.5 w-3.5 text-ocean" />

@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react'
 import type { User } from '@supabase/supabase-js'
-import { supabase } from '../lib/supabase'
+import { getAuthRedirectUrl, supabase } from '../lib/supabase'
 import { fetchMyProfessional, fetchUserRole } from '../lib/store'
 import type { Professional, UserRole } from '../lib/types'
 
@@ -31,6 +31,8 @@ interface AuthContextValue {
   isAdmin: boolean
   signIn: (email: string, password: string) => Promise<UserRole>
   signUp: (input: SignUpInput) => Promise<{ needsConfirmation: boolean }>
+  requestPasswordReset: (email: string) => Promise<void>
+  updatePassword: (password: string) => Promise<void>
   signOut: () => Promise<void>
   refreshProfile: () => Promise<void>
 }
@@ -110,6 +112,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { needsConfirmation: !data.session }
   }, [loadProfile])
 
+  const requestPasswordReset = useCallback(async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: getAuthRedirectUrl('/redefinir-senha'),
+    })
+    if (error) throw new Error(error.message)
+  }, [])
+
+  const updatePassword = useCallback(async (password: string) => {
+    const { data, error } = await supabase.auth.updateUser({ password })
+    if (error) throw new Error(error.message)
+    if (data.user) setUser(data.user)
+  }, [])
+
   const signOut = useCallback(async () => {
     await supabase.auth.signOut()
     setUser(null)
@@ -131,10 +146,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAdmin: role === 'admin',
       signIn,
       signUp,
+      requestPasswordReset,
+      updatePassword,
       signOut,
       refreshProfile,
     }),
-    [user, role, professional, loading, signIn, signUp, signOut, refreshProfile],
+    [
+      user,
+      role,
+      professional,
+      loading,
+      signIn,
+      signUp,
+      requestPasswordReset,
+      updatePassword,
+      signOut,
+      refreshProfile,
+    ],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

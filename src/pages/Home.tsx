@@ -161,7 +161,7 @@ export function Home() {
 
             <h1 className="display mt-5 max-w-2xl text-balance text-[2.65rem] font-extrabold leading-[1.02] text-ink sm:text-6xl">
               Quem faz Salinas acontecer,{' '}
-              <span className="relative whitespace-nowrap text-ocean">
+              <span className="relative whitespace-nowrap text-gold-ink">
                 num só lugar
                 <svg
                   className="absolute -bottom-1 left-0 h-3 w-full text-sun/80"
