@@ -11,10 +11,13 @@ insert into public.categories (name, slug, icon, sort_order) values
   ('Fotógrafo', 'fotografo', 'camera', 10),
   ('Passeios', 'passeios', 'sailboat', 11),
   ('Mercados e mercearias', 'mercados-e-mercearias', 'shopping-basket', 12),
-  ('Materiais de construção', 'materiais-de-construcao', 'brick-wall', 13),
-  ('Venda de mariscos e peixes', 'venda-de-mariscos-e-peixes', 'fish', 14),
-  ('Táxi e transporte', 'taxi-e-transporte', 'car-taxi-front', 15),
-  ('Outros serviços', 'outros-servicos', 'grid', 16)
+  ('Depósitos de bebidas', 'depositos-de-bebidas', 'wine', 13),
+  ('Materiais de construção', 'materiais-de-construcao', 'brick-wall', 14),
+  ('Venda de mariscos e peixes', 'venda-de-mariscos-e-peixes', 'fish', 15),
+  ('Táxi e transporte', 'taxi-e-transporte', 'car-taxi-front', 16),
+  ('Serviços de tecnologia', 'servicos-de-tecnologia', 'monitor-cog', 17),
+  ('Locação de espaços para festas', 'locacao-de-espacos-para-festas', 'party-popper', 18),
+  ('Outros serviços', 'outros-servicos', 'grid', 19)
 on conflict (slug) do update set
   name = excluded.name,
   icon = excluded.icon,
