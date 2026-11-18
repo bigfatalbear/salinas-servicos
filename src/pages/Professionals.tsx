@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { Filter, MapPin, Search, SlidersHorizontal, Star, X } from 'lucide-react'
 import { APP_NAME, CITY_NAME } from '../config'
 import { LOCALITIES } from '../data/site'
+import { professionalSearchScore } from '../lib/search'
 import { fetchCategories, fetchProfessionals } from '../lib/store'
 import type { Category, Professional } from '../lib/types'
 import { cn } from '../lib/utils'
@@ -52,28 +53,34 @@ export function Professionals() {
   }, [searchParams])
 
   const filtered = useMemo(() => {
-    const term = text.trim().toLowerCase()
+    const term = text.trim()
     const locality = LOCALITIES.find((item) => item.value === local)
 
-    const result = professionals.filter((item) => {
-      if (featuredOnly && !item.is_featured) return false
-      if (category && item.category?.slug !== category) return false
-      if (locality) {
-        const neighborhood = (item.neighborhood ?? '').toLowerCase()
-        const matches = locality.match.some((value) => neighborhood.includes(value.toLowerCase()))
-        if (!matches) return false
-      }
-      if (!term) return true
-      return [item.business_name, item.description, item.category?.name, item.neighborhood]
-        .filter(Boolean)
-        .some((value) => value!.toLowerCase().includes(term))
-    })
+    const result = professionals
+      .filter((item) => {
+        if (featuredOnly && !item.is_featured) return false
+        if (category && item.category?.slug !== category) return false
+        if (locality) {
+          const neighborhood = (item.neighborhood ?? '').toLowerCase()
+          const matches = locality.match.some((value) => neighborhood.includes(value.toLowerCase()))
+          if (!matches) return false
+        }
+        return true
+      })
+      .map((item) => ({ item, score: term ? professionalSearchScore(item, term) : 0 }))
+      .filter(({ score }) => !term || score > 0)
 
-    return result.sort((a, b) => {
-      if (sort === 'name') return a.business_name.localeCompare(b.business_name, 'pt-BR')
-      if (sort === 'recent') return b.created_at.localeCompare(a.created_at)
-      return b.recommendations - a.recommendations
-    })
+    return result
+      .sort((a, b) => {
+        if (term && sort === 'recommended') {
+          const byScore = b.score - a.score
+          if (byScore) return byScore
+        }
+        if (sort === 'name') return a.item.business_name.localeCompare(b.item.business_name, 'pt-BR')
+        if (sort === 'recent') return b.item.created_at.localeCompare(a.item.created_at)
+        return b.item.recommendations - a.item.recommendations
+      })
+      .map(({ item }) => item)
   }, [professionals, text, category, local, featuredOnly, sort])
 
   const hasFilters = Boolean(text || category || local || featuredOnly)
@@ -91,7 +98,7 @@ export function Professionals() {
       <PageHeader
         eyebrow="Diretório local"
         title="Profissionais de Salinas."
-        description={`Busque por nome, serviço ou localidade. Todos os perfis são da comunidade de ${CITY_NAME}.`}
+        description={`Busque por nome, serviço, sinônimo ou localidade. Ex.: unha, cftv, mudança, faxina, bebida ou festa. Todos os perfis são da comunidade de ${CITY_NAME}.`}
         action={
           <p className="text-sm font-extrabold text-muted">
             {loading
@@ -112,7 +119,7 @@ export function Professionals() {
             <input
               value={text}
               onChange={(event) => setText(event.target.value)}
-              placeholder="Nome, serviço ou bairro..."
+              placeholder="Ex.: eletricista, unha, cftv, frete..."
               className="field min-h-12 rounded-full! pl-11!"
             />
           </label>
@@ -262,7 +269,7 @@ export function Professionals() {
           <EmptyState
             icon={Search}
             title="Nenhum profissional encontrado"
-            description="Tente buscar por outro serviço, localidade ou remova os filtros para ver todos os perfis."
+            description="Tente um sinônimo (unha, cftv, mudança, faxina), outro bairro ou remova os filtros para ver todos os perfis."
             action={
               <button type="button" onClick={clearFilters} className="btn btn-primary">
                 Limpar filtros

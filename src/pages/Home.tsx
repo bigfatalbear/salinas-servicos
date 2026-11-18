@@ -198,6 +198,9 @@ export function Home() {
                 onLocalityChange={setLocality}
                 onSubmit={handleSearch}
               />
+              <p className="mt-2 px-1 text-[11px] font-semibold leading-relaxed text-muted">
+                Busque por serviço, sinônimo ou bairro: unha, cftv, mudança, faxina, bebida, festa.
+              </p>
             </div>
 
             <div className="mt-5 grid gap-2.5 sm:grid-cols-3">

@@ -117,7 +117,7 @@ export const HOW_IT_WORKS: Array<{ icon: LucideIcon; title: string; text: string
   {
     icon: Search,
     title: 'Encontre',
-    text: 'Busque por serviço, categoria ou localidade.',
+    text: 'Busque por serviço, sinônimo, categoria ou localidade.',
   },
   {
     icon: MessageCircle,

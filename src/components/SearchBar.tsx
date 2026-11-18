@@ -40,7 +40,7 @@ export function SearchBar({
         <input
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
-          placeholder="O que você procura?"
+          placeholder="Ex.: eletricista, unha, frete, cftv..."
           className="field min-h-12 rounded-full! pl-11!"
         />
       </label>
