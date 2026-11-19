@@ -252,30 +252,42 @@ export function Home() {
 
       <section className="border-y border-line bg-surface/55">
         <div className="container-wide grid grid-cols-3 divide-x divide-line py-5 text-center">
-          <div>
-            <p className="display text-2xl font-extrabold text-ink sm:text-3xl">
+          <Link
+            to="/categorias"
+            className="group flex flex-col items-center rounded-lg px-2 py-1 transition hover:bg-surface-2"
+            aria-label="Ver todas as categorias"
+          >
+            <p className="display text-2xl font-extrabold text-ink transition group-hover:text-ocean sm:text-3xl">
               {loading ? '—' : categories.length}
             </p>
-            <p className="mt-0.5 text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted sm:text-xs">
+            <p className="mt-0.5 text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted transition group-hover:text-ocean sm:text-xs">
               Categorias
             </p>
-          </div>
-          <div>
-            <p className="display text-2xl font-extrabold text-ink sm:text-3xl">
+          </Link>
+          <Link
+            to="/profissionais"
+            className="group flex flex-col items-center rounded-lg px-2 py-1 transition hover:bg-surface-2"
+            aria-label="Ver todos os profissionais"
+          >
+            <p className="display text-2xl font-extrabold text-ink transition group-hover:text-ocean sm:text-3xl">
               {loading ? '—' : professionals.length}
             </p>
-            <p className="mt-0.5 text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted sm:text-xs">
+            <p className="mt-0.5 text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted transition group-hover:text-ocean sm:text-xs">
               Profissionais
             </p>
-          </div>
-          <div>
-            <p className="display text-2xl font-extrabold text-ink sm:text-3xl">
+          </Link>
+          <a
+            href="#localidades"
+            className="group flex flex-col items-center rounded-lg px-2 py-1 transition hover:bg-surface-2"
+            aria-label="Explorar por localidade"
+          >
+            <p className="display text-2xl font-extrabold text-ink transition group-hover:text-ocean sm:text-3xl">
               {LOCALITIES.length}
             </p>
-            <p className="mt-0.5 text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted sm:text-xs">
+            <p className="mt-0.5 text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted transition group-hover:text-ocean sm:text-xs">
               Localidades
             </p>
-          </div>
+          </a>
         </div>
       </section>
 
@@ -334,7 +346,7 @@ export function Home() {
         )}
       </section>
 
-      <section className="container-wide pt-14 sm:pt-20">
+      <section id="localidades" className="container-wide scroll-mt-24 pt-14 sm:pt-20">
         <MapPreview />
       </section>
 
