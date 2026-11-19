@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "sitemap": "node scripts/generate-sitemap.mjs",
+    "instagram:generate": "node scripts/instagram/generate.mjs",
+    "instagram:publish": "node scripts/instagram/publish.mjs",
     "prebuild": "npm run sitemap",
     "build": "tsc -b && vite build",
     "build:pages": "cross-env VITE_BASE=/salinas-servicos/ npm run build",
@@ -34,6 +36,7 @@
     "cross-env": "^10.1.0",
     "gh-pages": "^6.3.0",
     "oxlint": "^1.90.0",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4.3.5",
     "typescript": "~7.0.2",
     "vite": "^8.3.6",
