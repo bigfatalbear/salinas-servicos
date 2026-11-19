@@ -7,10 +7,9 @@
     "dev": "vite",
     "sitemap": "node scripts/generate-sitemap.mjs",
     "prebuild": "npm run sitemap",
-    "prebuild:pages": "npm run sitemap",
     "build": "tsc -b && vite build",
     "build:pages": "cross-env VITE_BASE=/salinas-servicos/ npm run build",
-    "postbuild": "node -e \"const fs=require('fs'); if(fs.existsSync('dist/index.html')) fs.copyFileSync('dist/index.html','dist/404.html')\"",
+    "postbuild": "node scripts/generate-static-routes.mjs",
     "deploy": "npm run build:pages && gh-pages -d dist --dotfiles --nojekyll --no-history",
     "lint": "oxlint",
     "preview": "vite preview"
