@@ -36,7 +36,7 @@ export function CategoryCard({
 
   return (
     <Link
-      to={`/profissionais?categoria=${category.slug}`}
+      to={`/servicos/${category.slug}`}
       className="group relative flex min-h-[9.5rem] flex-col justify-between overflow-hidden rounded-2xl border border-brand-deep-2! bg-brand-deep p-4 text-white shadow-[0_18px_40px_-28px_rgba(0,0,0,0.75)] transition duration-300 hover:-translate-y-1 hover:border-water/50! hover:shadow-[0_22px_50px_-24px_rgba(0,0,0,0.8)] sm:p-5"
       aria-label={`Ver profissionais de ${category.name}`}
     >

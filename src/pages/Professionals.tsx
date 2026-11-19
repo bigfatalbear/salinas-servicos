@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Filter, MapPin, Search, SlidersHorizontal, Star, X } from 'lucide-react'
-import { APP_NAME, CITY_NAME } from '../config'
+import { CITY_NAME } from '../config'
 import { LOCALITIES } from '../data/site'
 import { professionalSearchScore } from '../lib/search'
 import { fetchCategories, fetchProfessionals } from '../lib/store'
+import { useSeo } from '../lib/seo'
 import type { Category, Professional } from '../lib/types'
 import { cn } from '../lib/utils'
 import { EmptyState } from '../components/EmptyState'
@@ -26,9 +27,11 @@ export function Professionals() {
   const [sort, setSort] = useState<SortMode>('recommended')
   const [showFilters, setShowFilters] = useState(false)
 
-  useEffect(() => {
-    document.title = `Profissionais — ${APP_NAME}`
-  }, [])
+  useSeo({
+    title: `Profissionais de ${CITY_NAME}`,
+    description: `Busque eletricistas, manicures, fretes, diaristas, comércios e outros talentos de ${CITY_NAME}. Contato direto pelo WhatsApp, com recomendação da comunidade.`,
+    path: '/profissionais',
+  })
 
   useEffect(() => {
     let active = true

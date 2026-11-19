@@ -49,6 +49,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/divulgue" className="transition hover:text-ocean">
+                  Divulgar o app
+                </Link>
+              </li>
+              <li>
                 <Link to="/favoritos" className="transition hover:text-ocean">
                   Meus favoritos
                 </Link>

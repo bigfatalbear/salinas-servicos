@@ -12,7 +12,7 @@ import {
   ThumbsUp,
   UserRound,
 } from 'lucide-react'
-import { APP_NAME, CITY_NAME, WHATSAPP_MESSAGE } from '../config'
+import { APP_NAME, CITY_NAME, SITE_URL, WHATSAPP_MESSAGE } from '../config'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import {
@@ -22,6 +22,7 @@ import {
   registerWhatsAppClick,
 } from '../lib/store'
 import type { Professional } from '../lib/types'
+import { useSeo } from '../lib/seo'
 import {
   cn,
   formatNumber,
@@ -29,7 +30,9 @@ import {
   getVoterToken,
   imageUrl,
   initials,
+  onlyDigits,
   readRecommended,
+  truncate,
   whatsappUrl,
   writeRecommended,
 } from '../lib/utils'
@@ -39,6 +42,7 @@ import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
 import { ProfessionalCard } from '../components/ProfessionalCard'
 import { RatingNotice } from '../components/RatingNotice'
+import { WhatsAppShareButton } from '../components/WhatsAppShareButton'
 
 export function ProfessionalDetail() {
   const { id } = useParams()
@@ -90,22 +94,43 @@ export function ProfessionalDetail() {
     }
   }, [id])
 
-  useEffect(() => {
-    if (!professional) return
-    const previousTitle = document.title
-    const meta = document.querySelector('meta[name="description"]')
-    const previousDescription = meta?.getAttribute('content') ?? ''
-    document.title = `${professional.business_name} — ${APP_NAME}`
-    meta?.setAttribute(
-      'content',
-      professional.description?.slice(0, 155) ||
-        `${professional.business_name} em ${CITY_NAME}. Veja informações e fale pelo WhatsApp.`,
-    )
-    return () => {
-      document.title = previousTitle
-      meta?.setAttribute('content', previousDescription)
-    }
-  }, [professional])
+  const profilePath = professional ? `/profissionais/${professional.id}` : undefined
+  const profilePhone = professional ? onlyDigits(professional.whatsapp) : ''
+  useSeo({
+    title: professional
+      ? `${professional.business_name} — ${professional.category?.name ?? 'Serviço'} em ${CITY_NAME}`
+      : `Profissional — ${APP_NAME}`,
+    description: professional
+      ? truncate(
+          professional.description?.replace(/\s+/g, ' ').trim() ||
+            `${professional.business_name} em ${professional.neighborhood || CITY_NAME}. Veja informações, fotos e fale direto pelo WhatsApp.`,
+          155,
+        )
+      : `Encontre profissionais e serviços em ${CITY_NAME}.`,
+    path: profilePath,
+    type: 'profile',
+    image: professional?.photo_1_url ?? undefined,
+    jsonLd: professional
+      ? {
+          '@type': 'ProfessionalService',
+          name: professional.business_name,
+          description: professional.description || undefined,
+          image: professional.photo_1_url || undefined,
+          url: profilePath ? `${SITE_URL}${profilePath}` : undefined,
+          telephone: profilePhone ? `+${profilePhone.startsWith('55') ? profilePhone : `55${profilePhone}`}` : undefined,
+          areaServed: { '@type': 'City', name: CITY_NAME },
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: professional.address || undefined,
+            addressLocality: CITY_NAME,
+            addressRegion: 'BA',
+            addressCountry: 'BR',
+          },
+          knowsAbout: professional.category?.name,
+          sameAs: undefined,
+        }
+      : undefined,
+  })
 
   if (loading) {
     return (
@@ -329,6 +354,12 @@ export function ProfessionalDetail() {
                 {recommended ? 'Você recomendou' : 'Recomendar'}
               </button>
             </div>
+
+            <WhatsAppShareButton
+              className="mt-2.5 w-full justify-center border-ocean/25! bg-ocean/5! text-ocean!"
+              label="Indicar este perfil no WhatsApp"
+              text={`Conheça ${professional.business_name} (${professional.category?.name ?? 'serviço local'}) em ${professional.neighborhood || CITY_NAME}. Contato direto pelo WhatsApp no Salinas Serviços: ${SITE_URL}${profilePath}`}
+            />
 
             <div className="mt-5 flex items-center gap-2 text-xs text-muted">
               <BadgeCheck className="h-4 w-4 text-ocean" aria-hidden="true" />

@@ -7,7 +7,7 @@ export function LocalityCard({ locality }: { locality: Locality }) {
 
   return (
     <Link
-      to={`/profissionais?local=${encodeURIComponent(locality.value)}`}
+      to={`/localidades/${locality.slug}`}
       className="group flex min-h-28 flex-col justify-between rounded-2xl border border-line bg-surface-2 p-4 transition duration-300 hover:border-ocean/40 hover:bg-surface"
     >
       <div className="flex items-start justify-between gap-3">

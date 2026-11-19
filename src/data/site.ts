@@ -45,6 +45,7 @@ export const NAV_LINKS: NavLinkItem[] = [
 export interface Locality {
   name: string
   value: string
+  slug: string
   match: string[]
   description: string
   icon: LucideIcon
@@ -54,6 +55,7 @@ export const LOCALITIES: Locality[] = [
   {
     name: 'Salinas',
     value: 'Sede',
+    slug: 'sede',
     match: ['Sede', 'Centro', 'Salinas'],
     description: 'Sede do município e seus bairros',
     icon: Sun,
@@ -61,6 +63,7 @@ export const LOCALITIES: Locality[] = [
   {
     name: 'Encarnação',
     value: 'Encarnação',
+    slug: 'encarnacao',
     match: ['Encarnação'],
     description: 'Distrito de Encarnação',
     icon: Anchor,
@@ -68,6 +71,7 @@ export const LOCALITIES: Locality[] = [
   {
     name: 'Conceição de Salinas',
     value: 'Conceição de Salinas',
+    slug: 'conceicao-de-salinas',
     match: ['Conceição de Salinas'],
     description: 'Comunidade pesqueira e marisqueira',
     icon: Fish,
@@ -75,6 +79,7 @@ export const LOCALITIES: Locality[] = [
   {
     name: 'Cairu',
     value: 'Cairu',
+    slug: 'cairu',
     match: ['Cairu'],
     description: 'Distrito de Cairu',
     icon: Sailboat,
@@ -82,6 +87,7 @@ export const LOCALITIES: Locality[] = [
   {
     name: 'Dendê',
     value: 'Dendê',
+    slug: 'dende',
     match: ['Dendê'],
     description: 'Distrito de Dendê (Porto da Telha)',
     icon: Trees,
@@ -89,6 +95,7 @@ export const LOCALITIES: Locality[] = [
   {
     name: 'Barra do Paraguaçu',
     value: 'Barra do Paraguaçu',
+    slug: 'barra-do-paraguacu',
     match: ['Barra do Paraguaçu'],
     description: 'Povoado na foz do Paraguaçu',
     icon: Waves,

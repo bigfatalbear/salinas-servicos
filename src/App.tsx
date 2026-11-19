@@ -34,6 +34,12 @@ const Dashboard = lazy(() =>
 )
 const Admin = lazy(() => import('./pages/Admin').then((module) => ({ default: module.Admin })))
 const About = lazy(() => import('./pages/About').then((module) => ({ default: module.About })))
+const Divulgue = lazy(() =>
+  import('./pages/Divulgue').then((module) => ({ default: module.Divulgue })),
+)
+const LocalLanding = lazy(() =>
+  import('./pages/LocalLanding').then((module) => ({ default: module.LocalLanding })),
+)
 const NotFound = lazy(() =>
   import('./pages/NotFound').then((module) => ({ default: module.NotFound })),
 )
@@ -56,6 +62,10 @@ export default function App() {
             <Route path="categorias" element={<Categories />} />
             <Route path="profissionais" element={<Professionals />} />
             <Route path="profissionais/:id" element={<ProfessionalDetail />} />
+            <Route path="servicos/:categorySlug" element={<LocalLanding />} />
+            <Route path="servicos/:categorySlug/:localitySlug" element={<LocalLanding />} />
+            <Route path="localidades/:localitySlug" element={<LocalLanding />} />
+            <Route path="divulgue" element={<Divulgue />} />
             <Route path="comercios" element={<Businesses />} />
             <Route path="turismo" element={<Tourism />} />
             <Route path="favoritos" element={<Favorites />} />

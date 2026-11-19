@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Plus, Search, Sparkles } from 'lucide-react'
-import { APP_NAME, CITY_NAME } from '../config'
+import { CITY_NAME } from '../config'
 import { fetchCategories, fetchProfessionals } from '../lib/store'
+import { useSeo } from '../lib/seo'
 import type { Category, Professional } from '../lib/types'
 import { CategoryCard } from '../components/CategoryCard'
 import { Loading } from '../components/Loading'
@@ -15,9 +16,11 @@ export function Categories() {
   const [professionals, setProfessionals] = useState<Professional[]>([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    document.title = `Categorias — ${APP_NAME}`
-  }, [])
+  useSeo({
+    title: `Categorias de serviços em ${CITY_NAME}`,
+    description: `Veja todas as categorias de serviços e comércios de ${CITY_NAME}: construção, beleza, transporte, alimentação, tecnologia e muito mais.`,
+    path: '/categorias',
+  })
 
   useEffect(() => {
     let active = true

@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "sitemap": "node scripts/generate-sitemap.mjs",
+    "prebuild": "npm run sitemap",
+    "prebuild:pages": "npm run sitemap",
     "build": "tsc -b && vite build",
     "build:pages": "cross-env VITE_BASE=/salinas-servicos/ npm run build",
     "postbuild": "node -e \"const fs=require('fs'); if(fs.existsSync('dist/index.html')) fs.copyFileSync('dist/index.html','dist/404.html')\"",
@@ -17,6 +20,7 @@
     "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "@supabase/supabase-js": "^2.119.0",
     "lucide-react": "^1.72.0",
+    "qrcode": "^1.5.4",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.5"
@@ -24,6 +28,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.5",
     "@types/node": "^24.19.2",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",

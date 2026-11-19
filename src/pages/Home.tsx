@@ -6,6 +6,7 @@ import {
   MapPin,
   Megaphone,
   MessageCircle,
+  QrCode,
   Sparkles,
   Store,
   Users,
@@ -18,6 +19,7 @@ import {
   TRUST_POINTS,
 } from '../data/site'
 import { fetchCategories, fetchProfessionals } from '../lib/store'
+import { useSeo } from '../lib/seo'
 import type { Category, Professional } from '../lib/types'
 import { CategoryCard } from '../components/CategoryCard'
 import { HowItWorks } from '../components/HowItWorks'
@@ -40,16 +42,32 @@ export function Home() {
   const [category, setCategory] = useState('')
   const [locality, setLocality] = useState('')
 
-  useEffect(() => {
-    document.title = `${APP_NAME} — ${CITY_NAME}`
-    const description = document.querySelector('meta[name="description"]')
-    if (description) {
-      description.setAttribute(
-        'content',
-        'Encontre profissionais, serviços e comércios de Salinas da Margarida. Contato direto pelo WhatsApp e recomendação da comunidade.',
-      )
-    }
-  }, [])
+  useSeo({
+    title: `${APP_NAME} — ${CITY_NAME}`,
+    description:
+      'Encontre profissionais, serviços e comércios de Salinas da Margarida. Contato direto pelo WhatsApp e recomendação da comunidade.',
+    path: '/',
+    jsonLd: [
+      {
+        '@type': 'WebSite',
+        name: APP_NAME,
+        url: 'https://bigfatalbear.github.io/salinas-servicos/',
+        inLanguage: 'pt-BR',
+        potentialAction: {
+          '@type': 'SearchAction',
+          target:
+            'https://bigfatalbear.github.io/salinas-servicos/profissionais?q={search_term_string}',
+          'query-input': 'required name=search_term_string',
+        },
+      },
+      {
+        '@type': 'Organization',
+        name: APP_NAME,
+        url: 'https://bigfatalbear.github.io/salinas-servicos/',
+        areaServed: { '@type': 'City', name: CITY_NAME },
+      },
+    ],
+  })
 
   useEffect(() => {
     let active = true
@@ -498,6 +516,10 @@ export function Home() {
           </div>
           <div className="flex flex-wrap justify-center gap-2">
             <ShareButton label="Compartilhar o app" className="btn-primary!" />
+            <Link to="/divulgue" className="btn btn-soft">
+              <QrCode className="h-4 w-4" aria-hidden="true" />
+              Divulgar na cidade
+            </Link>
             <Link to="/sobre" className="btn btn-soft">
               <Store className="h-4 w-4" aria-hidden="true" />
               Sobre o projeto

@@ -85,7 +85,7 @@ export function MapPreview() {
             {LOCALITIES.map((locality) => (
               <Link
                 key={locality.value}
-                to={`/profissionais?local=${encodeURIComponent(locality.value)}`}
+                to={`/localidades/${locality.slug}`}
                 className="group flex min-h-12 items-center justify-between gap-2 rounded-xl border border-line bg-surface-2 px-3 text-left transition hover:border-ocean/40 hover:bg-surface"
               >
                 <span className="min-w-0">
