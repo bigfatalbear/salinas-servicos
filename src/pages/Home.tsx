@@ -170,7 +170,33 @@ export function Home() {
             </Link>
           </div>
         </div>
-        <div className="container-wide grid gap-10 pb-12 pt-9 sm:pt-14 lg:grid-cols-[1.04fr_0.96fr] lg:items-center lg:pb-20">
+        <div className="container-wide pt-7 sm:pt-9">
+          <SectionHeading
+            eyebrow="Encontre por serviço"
+            title="O que você precisa hoje?"
+            description="Escolha uma categoria e veja quem está disponível em Salinas e nos distritos."
+            action={
+              <Link to="/categorias" className="btn btn-soft">
+                Ver categorias
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            }
+          />
+          {loading ? (
+            <Loading label="Carregando categorias..." />
+          ) : (
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              {categories.map((item) => (
+                <CategoryCard
+                  key={item.id}
+                  category={item}
+                  count={categoryCounts.get(item.id) ?? 0}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="container-wide grid gap-10 pb-12 pt-10 sm:pt-14 lg:grid-cols-[1.04fr_0.96fr] lg:items-center lg:pb-20">
           <div className="animate-fade-up">
             <span className="inline-flex items-center gap-2 rounded-full border border-ocean/15 bg-surface/75 px-3.5 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-ocean backdrop-blur">
               <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
@@ -289,33 +315,6 @@ export function Home() {
             </p>
           </a>
         </div>
-      </section>
-
-      <section className="container-wide pt-14 sm:pt-20">
-        <SectionHeading
-          eyebrow="Encontre por serviço"
-          title="O que você precisa hoje?"
-          description="Escolha uma categoria e veja quem está disponível em Salinas e nos distritos."
-          action={
-            <Link to="/categorias" className="btn btn-soft">
-              Ver categorias
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          }
-        />
-        {loading ? (
-          <Loading label="Carregando categorias..." />
-        ) : (
-          <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {categories.map((item) => (
-              <CategoryCard
-                key={item.id}
-                category={item}
-                count={categoryCounts.get(item.id) ?? 0}
-              />
-            ))}
-          </div>
-        )}
       </section>
 
       <section className="container-wide pt-14 sm:pt-20">
