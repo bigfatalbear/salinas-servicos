@@ -12,7 +12,7 @@ import {
   Store,
   Users,
 } from 'lucide-react'
-import { APP_NAME, APP_TAGLINE, CITY, CITY_NAME, SITE_URL } from '../config'
+import { APP_NAME, CITY, CITY_NAME, SHARE_INVITE, SITE_URL } from '../config'
 import {
   BUSINESS_CATEGORIES,
   LOCALITIES,
@@ -33,8 +33,6 @@ import { SalinasBanner } from '../components/SalinasBanner'
 import { SearchBar } from '../components/SearchBar'
 import { SectionHeading } from '../components/SectionHeading'
 import { ShareButton } from '../components/ShareButton'
-
-const SHARE_TEXT = `${APP_NAME} — ${APP_TAGLINE} Encontre profissionais e comércios de ${CITY_NAME} com contato direto no WhatsApp.`
 
 export function Home() {
   const navigate = useNavigate()
@@ -96,13 +94,18 @@ export function Home() {
   }, [])
 
   async function handleShare() {
+    const stats =
+      categories.length && professionals.length
+        ? `Já somos ${categories.length} categorias e ${professionals.length} perfis cadastrados.`
+        : ''
+    const message = [SHARE_INVITE, stats].filter(Boolean).join('\n\n')
     try {
       if (navigator.share) {
-        await navigator.share({ title: APP_NAME, text: SHARE_TEXT, url: SITE_URL })
+        await navigator.share({ title: APP_NAME, text: message, url: SITE_URL })
         return
       }
-      await navigator.clipboard.writeText(SITE_URL)
-      toast('Link copiado. Agora é só compartilhar!', 'success')
+      await navigator.clipboard.writeText(`${message}\n\n${SITE_URL}`)
+      toast('Mensagem de convite copiada com o link. Cole nos grupos!', 'success')
     } catch {
       // Compartilhamento cancelado pelo usuário.
     }

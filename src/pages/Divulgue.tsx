@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react'
 import { Download, Link2, Printer, QrCode, Share2, Sparkles } from 'lucide-react'
 import QRCodeLib from 'qrcode'
-import { APP_DESCRIPTION, APP_NAME, APP_TAGLINE, CITY_NAME, SITE_URL } from '../config'
+import {
+  APP_DESCRIPTION,
+  APP_NAME,
+  APP_TAGLINE,
+  CITY_NAME,
+  SHARE_INVITE,
+  SITE_URL,
+} from '../config'
 import { useSeo } from '../lib/seo'
 import { useToast } from '../context/ToastContext'
 import { PageHeader } from '../components/PageHeader'
 import { WhatsAppShareButton } from '../components/WhatsAppShareButton'
 
-const SHARE_TEXT = `${APP_NAME} — ${APP_TAGLINE} Encontre profissionais e comércios de ${CITY_NAME} e fale direto no WhatsApp: ${SITE_URL}`
+const SHARE_TEXT = SHARE_INVITE
 
 export function Divulgue() {
   const { toast } = useToast()

@@ -1,6 +1,6 @@
 import { Share2 } from 'lucide-react'
 import { useToast } from '../context/ToastContext'
-import { APP_DESCRIPTION, APP_NAME, SITE_URL } from '../config'
+import { APP_NAME, SHARE_INVITE, SITE_URL } from '../config'
 import { cn } from '../lib/utils'
 
 export function ShareButton({
@@ -8,7 +8,7 @@ export function ShareButton({
   className,
   url = SITE_URL,
   title = APP_NAME,
-  text = APP_DESCRIPTION,
+  text = SHARE_INVITE,
 }: {
   label?: string
   className?: string
@@ -24,8 +24,8 @@ export function ShareButton({
         await navigator.share({ title, text, url })
         return
       }
-      await navigator.clipboard.writeText(url)
-      toast('Link copiado. Agora é só compartilhar!', 'success')
+      await navigator.clipboard.writeText(`${text}\n\n${url}`)
+      toast('Mensagem com o link copiada. Cole onde quiser!', 'success')
     } catch {
       // Compartilhamento cancelado pelo usuário.
     }
