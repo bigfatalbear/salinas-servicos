@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowRight, MapPin, MessageCircle, Search, Sparkles } from 'lucide-react'
 import { APP_NAME, CITY_NAME } from '../config'
+import { specialtiesFor } from '../data/categoryScope'
 import { LOCALITIES } from '../data/site'
 import { fetchCategories, fetchProfessionals } from '../lib/store'
 import type { Category, Professional } from '../lib/types'
@@ -42,6 +43,10 @@ export function LocalLanding() {
   const locality = localitySlug
     ? LOCALITIES.find((item) => item.slug === localitySlug) ?? null
     : null
+  const specialties = useMemo(
+    () => (category ? specialtiesFor(category.slug) : []),
+    [category],
+  )
 
   const invalid = Boolean(
     (categorySlug && categories.length > 0 && !category) || (localitySlug && !locality),
@@ -69,7 +74,9 @@ export function LocalLanding() {
     : `/localidades/${locality?.slug ?? ''}`
 
   const description = category
-    ? `Encontre ${category.name.toLowerCase()} em ${place}. Veja perfis da comunidade, fale direto no WhatsApp e recomende quem faz um bom trabalho.`
+    ? specialties.length
+      ? `Encontre ${category.name.toLowerCase()} em ${place}: ${specialties.slice(0, 5).join(', ')} e mais. Veja perfis da comunidade, fale direto no WhatsApp e recomende quem faz um bom trabalho.`
+      : `Encontre ${category.name.toLowerCase()} em ${place}. Veja perfis da comunidade, fale direto no WhatsApp e recomende quem faz um bom trabalho.`
     : `Profissionais e serviços de ${place}, em Salinas da Margarida. Contato direto pelo WhatsApp, sem intermediários e com recomendação da comunidade.`
 
   const jsonLd = useMemo(() => {
@@ -127,11 +134,23 @@ export function LocalLanding() {
               text: `Os perfis desta página têm atendimento registrado em ${place}. Use a busca para filtrar por serviço, bairro ou sinônimo.`,
             },
           },
+          ...(category && specialties.length
+            ? [
+                {
+                  '@type': 'Question',
+                  name: `O que está incluído em ${category.name}?`,
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: `A categoria ${category.name} reúne ${specialties.join(', ')}.`,
+                  },
+                },
+              ]
+            : []),
         ],
       },
     ]
     return list
-  }, [category, locality, heading, description, path, place, service, filtered])
+  }, [category, locality, heading, description, path, place, service, specialties, filtered])
 
   useSeo({ title: heading, description, path, jsonLd })
 
@@ -199,6 +218,20 @@ export function LocalLanding() {
         <p className="mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted sm:text-lg">
           {description}
         </p>
+        {specialties.length ? (
+          <div className="mt-5">
+            <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-ocean">
+              Esta categoria também inclui
+            </p>
+            <ul className="mt-2 flex flex-wrap gap-1.5">
+              {specialties.map((item) => (
+                <li key={item} className="chip">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
         <div className="mt-6 flex flex-wrap items-center gap-2">
           <Link to="/profissionais" className="btn btn-primary">
             <Search className="h-4 w-4" aria-hidden="true" />
@@ -304,6 +337,17 @@ export function LocalLanding() {
               filtrar por serviço, bairro ou sinônimo.
             </p>
           </details>
+          {category && specialties.length ? (
+            <details className="card p-4">
+              <summary className="cursor-pointer text-sm font-extrabold text-ink">
+                O que está incluído em {category.name}?
+              </summary>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                A categoria {category.name} reúne {specialties.join(', ')}. Use a busca para
+                encontrar a especialidade que você precisa ou crie seu perfil gratuitamente.
+              </p>
+            </details>
+          ) : null}
         </div>
       </section>
 

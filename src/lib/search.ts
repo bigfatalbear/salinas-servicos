@@ -1,3 +1,4 @@
+import { specialtiesFor } from '../data/categoryScope'
 import { LOCALITIES } from '../data/site'
 import type { Professional } from './types'
 
@@ -80,6 +81,14 @@ const CATEGORY_TERMS: Record<string, string[]> = {
     'muro',
     'piso',
     'contrapiso',
+    'gesseiro',
+    'gesso',
+    'drywall',
+    'azulejista',
+    'azulejo',
+    'porcelanato',
+    'laje',
+    'sanca',
   ],
   pintor: [
     'pintura',
@@ -369,7 +378,12 @@ function tokenize(value: string) {
 function categoryText(professional: Professional) {
   const category = professional.category
   if (!category) return ''
-  return [category.name, category.slug, ...(CATEGORY_TERMS[category.slug] ?? [])].join(' ')
+  return [
+    category.name,
+    category.slug,
+    ...(CATEGORY_TERMS[category.slug] ?? []),
+    ...specialtiesFor(category.slug),
+  ].join(' ')
 }
 
 function localityText(neighborhood: string | null) {

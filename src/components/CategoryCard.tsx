@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight } from 'lucide-react'
+import { specialtiesFor } from '../data/categoryScope'
 import type { Category } from '../lib/types'
 import { CategoryIcon } from './CategoryIcon'
 
@@ -130,6 +131,7 @@ export function CategoryCard({
   count?: number
 }) {
   const tone = tones[category.icon ?? 'grid'] ?? tones.grid
+  const specialties = specialtiesFor(category.slug)
 
   return (
     <Link
@@ -154,6 +156,15 @@ export function CategoryCard({
         <h3 className="text-[17px] font-extrabold leading-tight text-brand-deep sm:text-lg">
           {category.name}
         </h3>
+        {specialties.length ? (
+          <p
+            title={specialties.join(', ')}
+            className="mt-1 line-clamp-2 text-[11px] font-semibold leading-snug text-brand-deep/55 sm:text-xs"
+          >
+            {specialties.slice(0, 4).join(' · ')}
+            {specialties.length > 4 ? ' e mais' : ''}
+          </p>
+        ) : null}
         {typeof count === 'number' ? (
           <p className="mt-1 text-[13px] font-semibold text-brand-deep/65 sm:text-sm">
             {count} {count === 1 ? 'profissional' : 'profissionais'}
