@@ -19,12 +19,13 @@ export function ShareButton({
   const { toast } = useToast()
 
   async function handleShare() {
+    const hasUrl = text.includes(url)
     try {
       if (navigator.share) {
-        await navigator.share({ title, text, url })
+        await navigator.share(hasUrl ? { title, text } : { title, text, url })
         return
       }
-      await navigator.clipboard.writeText(`${text}\n\n${url}`)
+      await navigator.clipboard.writeText(hasUrl ? text : `${text}\n\n${url}`)
       toast('Mensagem com o link copiada. Cole onde quiser!', 'success')
     } catch {
       // Compartilhamento cancelado pelo usuário.

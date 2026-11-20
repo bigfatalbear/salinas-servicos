@@ -6,11 +6,26 @@ export const CITY = 'Salinas da Margarida - BA'
 export const CITY_NAME = 'Salinas da Margarida'
 export const REGION = 'Baía de Todos-os-Santos · Bahia'
 export const SITE_URL = 'https://bigfatalbear.github.io/salinas-servicos'
-export const SHARE_INVITE = `Conheça o ${APP_NAME}, o guia de ${CITY_NAME}.
+export const SHARE_INVITE = `🚀 NOVIDADE EM SALINAS DA MARGARIDA E REGIÃO! 🌴📲
 
-Encontre profissionais e comércios da cidade com perfil completo e contato direto no WhatsApp — sem intermediário e sem comissão.
+🔎 SALINAS SERVIÇOS chegou para conectar você a serviços, profissionais, empresas e negócios da nossa região.
 
-Salve o link e indique para quem precisa resolver algo na cidade.`
+💼 Você tem um negócio ou presta algum serviço?
+📢 Divulgue seu trabalho e seja encontrado por novos clientes!
+
+🛠️ Está procurando um serviço?
+🔍 Encontre profissionais e empresas de forma simples e rápida.
+
+📍 Salinas da Margarida e regiões
+🤝 Valorize quem trabalha e empreende por aqui!
+
+🌐 ACESSE AGORA:
+👉 ${SITE_URL}/
+
+📲 Conheça, cadastre seu negócio e compartilhe com seus amigos!
+
+💙 SALINAS SERVIÇOS
+Conectando pessoas, serviços e negócios da nossa região.`
 export const OFFICIAL_SOURCE = 'https://www.salinasdamargarida.ba.gov.br/site/dadosmunicipais'
 export const WHATSAPP_MESSAGE =
   'Olá! Encontrei seu perfil no Salinas Serviços e gostaria de saber mais.'

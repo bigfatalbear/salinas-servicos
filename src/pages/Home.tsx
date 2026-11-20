@@ -12,7 +12,7 @@ import {
   Store,
   Users,
 } from 'lucide-react'
-import { APP_NAME, CITY, CITY_NAME, SHARE_INVITE, SITE_URL } from '../config'
+import { APP_NAME, CITY, CITY_NAME, SHARE_INVITE } from '../config'
 import {
   BUSINESS_CATEGORIES,
   LOCALITIES,
@@ -94,18 +94,13 @@ export function Home() {
   }, [])
 
   async function handleShare() {
-    const stats =
-      categories.length && professionals.length
-        ? `Já somos ${categories.length} categorias e ${professionals.length} perfis cadastrados.`
-        : ''
-    const message = [SHARE_INVITE, stats].filter(Boolean).join('\n\n')
     try {
       if (navigator.share) {
-        await navigator.share({ title: APP_NAME, text: message, url: SITE_URL })
+        await navigator.share({ title: APP_NAME, text: SHARE_INVITE })
         return
       }
-      await navigator.clipboard.writeText(`${message}\n\n${SITE_URL}`)
-      toast('Mensagem de convite copiada com o link. Cole nos grupos!', 'success')
+      await navigator.clipboard.writeText(SHARE_INVITE)
+      toast('Mensagem de convite copiada. Cole nos grupos!', 'success')
     } catch {
       // Compartilhamento cancelado pelo usuário.
     }

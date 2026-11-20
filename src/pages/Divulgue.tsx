@@ -50,7 +50,7 @@ export function Divulgue() {
   async function shareNative() {
     try {
       if (navigator.share) {
-        await navigator.share({ title: APP_NAME, text: SHARE_TEXT, url: SITE_URL })
+        await navigator.share({ title: APP_NAME, text: SHARE_TEXT })
         return
       }
       await copyLink()
