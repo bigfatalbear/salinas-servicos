@@ -15,6 +15,7 @@ export const VOTER_KEY = 'ss:voter-token'
 export const RECOMMENDED_KEY = 'ss:recommended'
 export const POLL_VOTED_KEY = 'ss:poll-voted'
 export const THEME_KEY = 'ss:theme'
+export const INSTALL_KEY = 'ss:install-dismissed'
 
 export const POLL_OPTIONS = [
   { key: 'yes', label: 'Sim, quero avaliações' },

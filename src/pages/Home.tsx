@@ -7,11 +7,12 @@ import {
   Megaphone,
   MessageCircle,
   QrCode,
+  Share2,
   Sparkles,
   Store,
   Users,
 } from 'lucide-react'
-import { APP_NAME, CITY, CITY_NAME } from '../config'
+import { APP_NAME, APP_TAGLINE, CITY, CITY_NAME, SITE_URL } from '../config'
 import {
   BUSINESS_CATEGORIES,
   LOCALITIES,
@@ -20,6 +21,7 @@ import {
 } from '../data/site'
 import { fetchCategories, fetchProfessionals } from '../lib/store'
 import { useSeo } from '../lib/seo'
+import { useToast } from '../context/ToastContext'
 import type { Category, Professional } from '../lib/types'
 import { CategoryCard } from '../components/CategoryCard'
 import { HowItWorks } from '../components/HowItWorks'
@@ -32,8 +34,11 @@ import { SearchBar } from '../components/SearchBar'
 import { SectionHeading } from '../components/SectionHeading'
 import { ShareButton } from '../components/ShareButton'
 
+const SHARE_TEXT = `${APP_NAME} — ${APP_TAGLINE} Encontre profissionais e comércios de ${CITY_NAME} com contato direto no WhatsApp.`
+
 export function Home() {
   const navigate = useNavigate()
+  const { toast } = useToast()
   const [categories, setCategories] = useState<Category[]>([])
   const [featured, setFeatured] = useState<Professional[]>([])
   const [professionals, setProfessionals] = useState<Professional[]>([])
@@ -90,6 +95,19 @@ export function Home() {
     }
   }, [])
 
+  async function handleShare() {
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: APP_NAME, text: SHARE_TEXT, url: SITE_URL })
+        return
+      }
+      await navigator.clipboard.writeText(SITE_URL)
+      toast('Link copiado. Agora é só compartilhar!', 'success')
+    } catch {
+      // Compartilhamento cancelado pelo usuário.
+    }
+  }
+
   function handleSearch(event: FormEvent) {
     event.preventDefault()
     const params = new URLSearchParams()
@@ -115,7 +133,7 @@ export function Home() {
       <section className="relative">
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_85%_8%,rgba(39,197,217,0.18),transparent_34rem),radial-gradient(circle_at_8%_70%,rgba(245,197,66,0.18),transparent_28rem)]" />
         <div className="container-wide pt-5 sm:pt-7">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
             <Link
               to="/entrar?modo=cadastro"
               className="group relative flex min-h-[8rem] flex-col justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-br from-sun to-[#ffd968] p-4 text-brand-deep! shadow-[0_18px_36px_-20px_rgba(245,197,66,0.85)] ring-1 ring-black/5 transition duration-300 hover:-translate-y-0.5 hover:brightness-105 sm:min-h-[6rem] sm:flex-row sm:items-center sm:gap-3 sm:p-5"
@@ -168,6 +186,31 @@ export function Home() {
                 aria-hidden="true"
               />
             </Link>
+            <button
+              type="button"
+              onClick={() => void handleShare()}
+              className="group relative col-span-2 flex min-h-[5.5rem] flex-col justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-br from-coral to-[#f2994a] p-4 text-left text-white shadow-[0_18px_36px_-20px_rgba(232,117,74,0.85)] ring-1 ring-black/5 transition duration-300 hover:-translate-y-0.5 hover:brightness-105 sm:min-h-[6rem] sm:flex-row sm:items-center sm:gap-3 sm:p-5 lg:col-span-1"
+            >
+              <span className="flex w-full items-start justify-between sm:w-auto sm:items-center">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/15 sm:h-11 sm:w-11">
+                  <Share2 className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <ArrowRight
+                  className="h-4 w-4 shrink-0 opacity-60 transition duration-300 group-hover:translate-x-0.5 sm:hidden"
+                  aria-hidden="true"
+                />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-lg font-extrabold leading-tight">Compartilhar</span>
+                <span className="mt-0.5 block text-xs font-semibold leading-snug text-white/80">
+                  Convide a cidade
+                </span>
+              </span>
+              <ArrowRight
+                className="ml-auto hidden h-4 w-4 shrink-0 opacity-60 transition duration-300 group-hover:translate-x-0.5 sm:block"
+                aria-hidden="true"
+              />
+            </button>
           </div>
         </div>
         <div className="container-wide pt-7 sm:pt-9">

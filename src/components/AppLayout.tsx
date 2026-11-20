@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { SITE_URL } from '../config'
 import { Footer } from './Footer'
 import { Header } from './Header'
+import { InstallBanner } from './InstallBanner'
 import { MobileNav } from './MobileNav'
 import { OfflineBanner } from './OfflineBanner'
 
@@ -36,6 +37,7 @@ export function AppLayout() {
     <div className="flex min-h-svh flex-col bg-sand">
       <ScrollToTop />
       <CanonicalUrl />
+      <InstallBanner />
       <Header />
       <OfflineBanner />
       <main className="flex-1 pb-24 lg:pb-0">

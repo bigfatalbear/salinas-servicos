@@ -2,43 +2,43 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://bigfatalbear.github.io/salinas-servicos/</loc>
-    <lastmod>2026-11-19</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://bigfatalbear.github.io/salinas-servicos/categorias</loc>
-    <lastmod>2026-11-19</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://bigfatalbear.github.io/salinas-servicos/profissionais</loc>
-    <lastmod>2026-11-19</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://bigfatalbear.github.io/salinas-servicos/comercios</loc>
-    <lastmod>2026-11-19</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://bigfatalbear.github.io/salinas-servicos/turismo</loc>
-    <lastmod>2026-11-19</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://bigfatalbear.github.io/salinas-servicos/sobre</loc>
-    <lastmod>2026-11-19</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://bigfatalbear.github.io/salinas-servicos/divulgue</loc>
-    <lastmod>2026-11-19</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -768,6 +768,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://bigfatalbear.github.io/salinas-servicos/profissionais/deef1d46-c830-4bea-99b1-4e2a2e367f48</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://bigfatalbear.github.io/salinas-servicos/profissionais/6f9e8219-6f4f-47bb-a708-58923224a38b</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -782,12 +788,6 @@
   <url>
     <loc>https://bigfatalbear.github.io/salinas-servicos/profissionais/781439aa-72a9-4f48-bf71-9f2ae35a0959</loc>
     <lastmod>2026-11-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://bigfatalbear.github.io/salinas-servicos/profissionais/deef1d46-c830-4bea-99b1-4e2a2e367f48</loc>
-    <lastmod>2026-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
