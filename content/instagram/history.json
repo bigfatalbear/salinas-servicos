@@ -5,6 +5,12 @@
       "type": "servico",
       "slug": "servicos-de-tecnologia",
       "image": "content/instagram/2026-11-19-servico-servicos-de-tecnologia.jpg"
+    },
+    {
+      "date": "2026-11-20",
+      "type": "localidade",
+      "slug": "conceicao-de-salinas",
+      "image": "content/instagram/2026-11-20-localidade-conceicao-de-salinas.jpg"
     }
   ]
 }
