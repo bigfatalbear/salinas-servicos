@@ -100,6 +100,21 @@ const tones: Record<string, Tone> = {
     chip: 'from-cyan-500 to-blue-600',
     glow: 'shadow-[0_18px_40px_-24px_rgba(56,189,248,0.8)]',
   },
+  shirt: {
+    card: 'from-purple-200 via-violet-200 to-indigo-300',
+    chip: 'from-purple-500 to-indigo-600',
+    glow: 'shadow-[0_18px_40px_-24px_rgba(147,51,234,0.8)]',
+  },
+  megaphone: {
+    card: 'from-orange-200 via-rose-200 to-red-300',
+    chip: 'from-orange-500 to-rose-600',
+    glow: 'shadow-[0_18px_40px_-24px_rgba(251,113,133,0.8)]',
+  },
+  'paw-print': {
+    card: 'from-sky-200 via-teal-200 to-emerald-300',
+    chip: 'from-teal-500 to-cyan-600',
+    glow: 'shadow-[0_18px_40px_-24px_rgba(20,184,166,0.8)]',
+  },
   grid: {
     card: 'from-slate-200 via-sky-200 to-cyan-300',
     chip: 'from-slate-500 to-sky-600',

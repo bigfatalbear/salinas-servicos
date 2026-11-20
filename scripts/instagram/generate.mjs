@@ -32,6 +32,9 @@ const CATEGORIES = [
   { name: 'Táxi e transporte', slug: 'taxi-e-transporte', hook: 'Translado, viagens e transporte com confiança.' },
   { name: 'Serviços de tecnologia', slug: 'servicos-de-tecnologia', hook: 'CFTV, redes e manutenção de computadores.' },
   { name: 'Locação de espaços para festas', slug: 'locacao-de-espacos-para-festas', hook: 'Espaço, buffet e decoração para comemorar.' },
+  { name: 'Costureiras, modas e confecções', slug: 'costureiras-modas-e-confeccoes', hook: 'Ajustes, uniformes e peças feitas por quem é daqui.' },
+  { name: 'Locuções e divulgações', slug: 'locucoes-e-divulgacoes', hook: 'Locução, jingles e divulgação para o seu negócio.' },
+  { name: 'Pets', slug: 'pets', hook: 'Banho, tosa, ração e cuidado para o seu companheiro.' },
 ]
 
 const LOCALITIES = [
